@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:title="Danh Sách Cá Nhân"
+        android:titleTextColor="@color/white"
+        android:background="@color/colorPrimaryDark"
+        android:id="@+id/toolbar"
+        />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_createPlaylist"
+        android:text="Tạo Playist"
+        android:textColor="@color/colorPrimary"
+        android:background="@drawable/rounded_button"
+        android:paddingRight="50dp"
+        android:paddingLeft="50dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        />
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/rcvplaylist">
+    </androidx.recyclerview.widget.RecyclerView>
+
+</LinearLayout>
