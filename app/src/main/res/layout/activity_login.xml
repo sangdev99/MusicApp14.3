@@ -93,27 +93,27 @@
             android:textColor="#FAD0E1"
             android:textSize="13dp"
             android:textStyle="bold" />
+
         <Button
+            android:layout_marginTop="50dp"
             android:id="@+id/btnfacebook"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
-            android:background="@drawable/button"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:text="ĐĂNG NHẬP BẰNG FACEBOOK"
-            android:textAllCaps="false"
-            android:textColor="#FE5295"
-            android:textSize="17sp" />
-        <Button
+            android:background="#416BC1"
+            android:onClick="onClick"
+            android:text="Login With FaceBook"
+            android:textColor="#ffffff"
+            android:textStyle="bold" />
+
+        <com.shobhitpuri.custombuttons.GoogleSignInButton
+            android:layout_marginTop="10dp"
             android:id="@+id/btngmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/button"
-            android:text="ĐĂNG NHẬP BẰNG GMAIL"
-            android:textColor="#FE5295"
-            android:textSize="17sp" />
+            android:layout_centerInParent="true"
+            android:text="@string/google_sign_up"
+            app:isDarkTheme="true" />
+
         <TextView
             android:id="@+id/tvSignUp"
             android:layout_width="wrap_content"

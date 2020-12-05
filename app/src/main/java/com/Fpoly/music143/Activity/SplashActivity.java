@@ -38,10 +38,12 @@ public class SplashActivity extends AppCompatActivity {
         }, SPLASH_TIME_OUT);
 
     }
+
     private void makeAnimation(View view, int animID){
         Animation animation = AnimationUtils.loadAnimation(this, animID);
         view.startAnimation(animation);
     }
+
     private void fadeIn() {
         Animation fadeIn = new AlphaAnimation(0, 1);
         fadeIn.setInterpolator(new DecelerateInterpolator()); //add this
