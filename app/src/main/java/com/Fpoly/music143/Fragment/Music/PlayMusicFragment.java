@@ -49,6 +49,7 @@ import com.Fpoly.music143.Model.Song;
 import com.Fpoly.music143.Model.UserInfor;
 import com.Fpoly.music143.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -87,6 +88,7 @@ public class PlayMusicFragment extends Fragment implements ActionPlaying, Servic
     MediaSessionCompat mediaSession;
     MusicService musicService;
     BottomNavigationView navBar ;
+    private DotsIndicator dotsIndicator_music;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.activity_play_music,container,false);
@@ -395,6 +397,7 @@ public class PlayMusicFragment extends Fragment implements ActionPlaying, Servic
     }
     //Hàm ánh xạ, và chơi nhạc ban đầu
     private void init(View root) {
+        dotsIndicator_music = root.findViewById(R.id.dotsIndicator_music) ;
         navBar = root.findViewById(R.id.nav_view);
         mediaSession = new MediaSessionCompat(getContext(),"PlayerAudio");
         //Các nút thao tác với danh sách bài hát
@@ -460,6 +463,7 @@ public class PlayMusicFragment extends Fragment implements ActionPlaying, Servic
         adapternhac.addFragment(fragment_dia_nhac);
         adapternhac.addFragment(fragment_play_danh_sach_cac_bai_hat);
         viewpagerplaynhac.setAdapter(adapternhac);
+        dotsIndicator_music.setViewPager(viewpagerplaynhac);
         fragment_dia_nhac = (Fragment_Dia_Nhac) adapternhac.getItem(0);
     }
     //Hàm format thời gian
