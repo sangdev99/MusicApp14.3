@@ -180,18 +180,5 @@ public class HomeFragment extends Fragment {
         } ; handler.postDelayed(runnable,4500) ;
     }
 
-    private void ChangeFragment(int position){
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("Songs",songNew.get(position));
-        bundle.putInt("fragment",4);
-        Fragment fragment = new PlayMusicFragment();
-        fragment.setArguments(bundle);
-        FragmentManager fragmentManager = this.getFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.setCustomAnimations(R.anim.slide_out_left,R.anim.slide_in_right);
-        transaction.replace(R.id.nav_host_fragment, fragment);
-        transaction.commit();
-
-    }
 
 }
