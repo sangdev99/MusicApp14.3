@@ -104,6 +104,5 @@ public class SongByKindAdapter extends RecyclerView.Adapter<SongByKindAdapter.Vi
         Fragment myFragment = new PlayMusicFragment();
         myFragment.setArguments(bundle);
         activity.getSupportFragmentManager().beginTransaction().replace(R.id.container, myFragment).addToBackStack(null).commit();
-        MainActivity.slidingUpPanelLayout();
     }
 }

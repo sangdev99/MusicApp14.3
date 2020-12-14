@@ -175,7 +175,6 @@ public class PlaylistFragment extends Fragment {
             fragmentTransaction.setCustomAnimations(R.anim.slide_out_left, R.anim.slide_in_right);
             AppCompatActivity activity = (AppCompatActivity) view.getContext();
             activity.getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).addToBackStack(null).commit();
-            MainActivity.slidingUpPanelLayout();
         }else {
             fragmentTransaction.setCustomAnimations(R.anim.slide_in_left,R.anim.slide_out_right);
             fragmentTransaction.replace(R.id.nav_host_fragment,fragment);

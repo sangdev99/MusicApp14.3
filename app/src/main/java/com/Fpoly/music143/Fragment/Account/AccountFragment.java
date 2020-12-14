@@ -50,6 +50,7 @@ public class AccountFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_account, container, false);
 
+
         //==========================================================================================
         init(root) ;
         GetUser();
@@ -156,7 +157,7 @@ public class AccountFragment extends Fragment {
         FragmentTransaction fragmentTransaction =this.getFragmentManager().beginTransaction();
         fragmentTransaction.setCustomAnimations(R.anim.slide_out_left,R.anim.slide_in_right);
         fragmentTransaction.replace(R.id.nav_host_fragment,fragment);
-        fragmentTransaction.addToBackStack(null);
+//        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
 
     }

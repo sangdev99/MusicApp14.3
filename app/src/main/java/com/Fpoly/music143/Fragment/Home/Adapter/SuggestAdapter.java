@@ -106,6 +106,5 @@ public class SuggestAdapter extends RecyclerView.Adapter<SuggestAdapter.ViewHold
         Fragment myFragment = new PlayMusicFragment();
         myFragment.setArguments(bundle);
         activity.getSupportFragmentManager().beginTransaction().replace(R.id.container, myFragment).addToBackStack(null).commit();
-        MainActivity.slidingUpPanelLayout();
     }
 }

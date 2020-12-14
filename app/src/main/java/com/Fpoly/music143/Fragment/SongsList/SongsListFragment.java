@@ -134,7 +134,6 @@ public class SongsListFragment extends Fragment {
             fragment.setArguments(bundle);
             AppCompatActivity activity = (AppCompatActivity) view.getContext();
             activity.getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).addToBackStack(null).commit();
-            MainActivity.slidingUpPanelLayout();
         }else{
             bundle.putBoolean("AddMusic",false);
             fragment.setArguments(bundle);

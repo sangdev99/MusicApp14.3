@@ -129,7 +129,6 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.ViewHolder>{
         Fragment myFragment = new PlayMusicFragment();
         myFragment.setArguments(bundle);
         activity.getSupportFragmentManager().beginTransaction().replace(R.id.container, myFragment).addToBackStack(null).commit();
-        MainActivity.slidingUpPanelLayout();
     }
 //        sendMessage();
 

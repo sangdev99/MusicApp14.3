@@ -35,6 +35,6 @@ public class Fragment_Dia_Nhac extends Fragment {
     }
 
     public void Playnhac(String image){
-        Picasso.get().load(image).into(circleImageView);
+            Picasso.get().load(image).into(circleImageView);
     }
 }

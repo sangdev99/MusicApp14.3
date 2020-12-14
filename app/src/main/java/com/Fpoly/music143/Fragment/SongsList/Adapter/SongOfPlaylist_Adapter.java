@@ -128,7 +128,6 @@ public class SongOfPlaylist_Adapter extends RecyclerView.Adapter<SongOfPlaylist_
         Fragment myFragment = new PlayMusicFragment();
         myFragment.setArguments(bundle);
         activity.getSupportFragmentManager().beginTransaction().replace(R.id.container, myFragment).addToBackStack(null).commit();
-        MainActivity.slidingUpPanelLayout();
     }
 
     private void DoDelete(final int position){
