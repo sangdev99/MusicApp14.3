@@ -30,6 +30,7 @@ public class UserDAO {
         this.context = context;
     }
 
+//    Lấy thông tin người dùng khi đăng nhập thành công
     public void getUser(String UserID, final UserCallBack userCallBack){
         db.collection("Users")
                 .whereEqualTo( "id",UserID)
@@ -53,6 +54,7 @@ public class UserDAO {
                 });
     }
 
+//    Thêm người người dùng vào FireStore
     public void signUp(String ID, String Username, String Password, String Email, final SucessCallBack sucessCallBack){
         userInfor = new UserInfor(ID,Username,null,Password,Email,false,false) ;
 

@@ -93,6 +93,7 @@ public class LoginActivity extends AppCompatActivity {
     private void login() {
         final String UserName = txtUserName.getText().toString();
         String Password = txtPassword.getText().toString();
+        // Kiểm tra dữ liệu người dùng nhập vào
         if(UserName.isEmpty()){
             txtUserName.setError("Vui Lòng Nhập Tên Đăng Nhập");
             txtUserName.requestFocus();
@@ -104,6 +105,7 @@ public class LoginActivity extends AppCompatActivity {
         else if (UserName.isEmpty() && Password.isEmpty()){
             Toast.makeText(LoginActivity.this, "Các Ô Không Được Để Trống", Toast.LENGTH_SHORT).show();
         }
+        // khi nhập đủ thông tin
         else if(!(UserName.isEmpty() && Password.isEmpty())){
             mAuth.signInWithEmailAndPassword(UserName,Password).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                 @Override
@@ -111,6 +113,7 @@ public class LoginActivity extends AppCompatActivity {
                     if (!task.isSuccessful()){
                         Toast.makeText(LoginActivity.this, "Đăng Nhập Lỗi, Vui Lòng Thử Lại", Toast.LENGTH_SHORT).show();
                     }
+                    // thành công
                     else {
                         updateUI();
                     }
@@ -122,6 +125,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 //Khôi Phục Mật Khẩu================================================================================================
+//    Dialog
     private void showRecoverPasswordDialog() {
         AlertDialog.Builder builder= new AlertDialog.Builder(this);
         //set Layout linear layout
@@ -156,6 +160,7 @@ public class LoginActivity extends AppCompatActivity {
         //Show Dialog
         builder.create().show();
     }
+    // bắt đâu xử lí khôi phục
     private void beginRecover(String email) {
         mAuth.sendPasswordResetEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -185,7 +190,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-//Chuyển Activity
+//Chuyển Activity khi đăng nhập thành công
     private void updateUI() {
         UserInfor userInfor = UserInfor.getInstance();
         userInfor.setID(mAuth.getCurrentUser().getUid());

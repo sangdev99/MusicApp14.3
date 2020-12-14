@@ -63,7 +63,6 @@ public class FacebookAccount extends AppCompatActivity {
                         Log.d("devS", "onSuccess" + loginResult);
                         handleFacebookAccessToken(loginResult.getAccessToken());
                     }
-
                     @Override
                     public void onCancel() {
                         finish();// App code

@@ -10,11 +10,13 @@ import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.Fpoly.music143.Activity.MainActivity;
 import com.Fpoly.music143.Database.DAO.SongsDAO;
 import com.Fpoly.music143.Fragment.Account.AccountFragment;
 import com.Fpoly.music143.Fragment.Music.PlayMusicFragment;
@@ -55,12 +57,12 @@ public class SongsListFragment extends Fragment {
             public void onClick(View view) {
                 if(isPlayList){
                     if(isFavorites){
-                        changeFragment(new AccountFragment(),true);
+                        changeFragment(view ,new AccountFragment(),true);
                     }else{
-                        changeFragment(new PlaylistFragment(),true);
+                        changeFragment(view, new PlaylistFragment(),true);
                     }
                 }else{
-                        changeFragment(new HomeFragment(),true);
+                        changeFragment(view,new HomeFragment(),true);
 //                    }
                 }
             }
@@ -70,7 +72,7 @@ public class SongsListFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               changeFragment( new PlayMusicFragment(),false);
+               changeFragment( view,new PlayMusicFragment(),false);
             }
         });
        /*Lấy danh sách mã bài hát yêu thích từ các fragment
@@ -121,7 +123,8 @@ public class SongsListFragment extends Fragment {
             }
         });
     }
-    private void changeFragment(Fragment fragment, Boolean isback){
+
+    private void changeFragment(View view,Fragment fragment, Boolean isback){
         FragmentTransaction ftm = this.getFragmentManager().beginTransaction();
         Bundle bundle = new Bundle();
         //Kiểm tra fragment sẽ đi qua fragment playmusic hay về lại fragment trước đó
@@ -129,13 +132,16 @@ public class SongsListFragment extends Fragment {
             bundle.putParcelableArrayList("MultipleSongs",Songs);
             bundle.putInt("fragment",1);
             fragment.setArguments(bundle);
-            ftm.setCustomAnimations(R.anim.slide_out_left,R.anim.slide_in_right);
+            AppCompatActivity activity = (AppCompatActivity) view.getContext();
+            activity.getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).addToBackStack(null).commit();
+            MainActivity.slidingUpPanelLayout();
         }else{
             bundle.putBoolean("AddMusic",false);
             fragment.setArguments(bundle);
             ftm.setCustomAnimations(R.anim.slide_in_left,R.anim.slide_out_right);
+            ftm.replace(R.id.nav_host_fragment,fragment);
+            ftm.commit();
         }
-        ftm.replace(R.id.nav_host_fragment,fragment);
-        ftm.commit();
+
     }
 }

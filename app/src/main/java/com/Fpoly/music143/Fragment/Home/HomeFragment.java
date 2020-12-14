@@ -158,7 +158,7 @@ public class HomeFragment extends Fragment {
                     userInfor.setLinkFaceBook(userInfors.get(0).getLinkFaceBook());
                     userInfor.setLinkGmail(userInfors.get(0).getLinkGmail());
                 }else{
-                    Toast.makeText(getContext(),"Bạn Chưa Có Tài Khoản hệ Thống, Vui Lòng Đăng Ký",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"Bạn Chưa Có Tài Khoản hệ Thống, Vui Lòng Đăng Ký",Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -166,18 +166,21 @@ public class HomeFragment extends Fragment {
     }
 
     private void autoSwipe() {
-        handler = new Handler() ;
-        runnable = new Runnable() {
-            @Override
-            public void run() {
-                currentSong = viewPager.getCurrentItem() ;
-                currentSong++ ;
-                if (currentSong >= viewPager.getAdapter().getCount()) {
-                    currentSong = 0 ;
-                } viewPager.setCurrentItem(currentSong, true);
-                handler.postDelayed(runnable,4500) ;
-            }
-        } ; handler.postDelayed(runnable,4500) ;
+            handler = new Handler() ;
+            runnable = new Runnable() {
+                @Override
+                public void run() {
+                    currentSong = viewPager.getCurrentItem() ;
+                    currentSong++ ;
+                    try {
+                    if (currentSong >= viewPager.getAdapter().getCount()) {
+                        currentSong = 0 ;
+                    } viewPager.setCurrentItem(currentSong, true);
+                    handler.postDelayed(runnable,4500) ;
+                    } catch (Exception e) {}
+                }
+            } ; handler.postDelayed(runnable,4500) ;
+
     }
 
 

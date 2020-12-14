@@ -8,12 +8,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.PagerAdapter;
 
+import com.Fpoly.music143.Activity.MainActivity;
 import com.Fpoly.music143.Fragment.Home.HomeFragment;
 import com.Fpoly.music143.Fragment.Music.PlayMusicFragment;
 import com.Fpoly.music143.Model.Song;
@@ -56,7 +58,7 @@ public class SongNewAdapter extends PagerAdapter {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ChangeFragment(position);
+                ChangeFragment(position,view);
             }
         });
         return view ;
@@ -67,17 +69,15 @@ public class SongNewAdapter extends PagerAdapter {
         container.removeView((View) object);
     }
 
-    private void ChangeFragment(int position){
+    private void ChangeFragment(int position, View view){
+        AppCompatActivity activity = (AppCompatActivity) view.getContext();
         Bundle bundle = new Bundle();
         bundle.putParcelable("Songs",Songs.get(position));
         bundle.putInt("fragment",4);
-        Fragment fragment = new PlayMusicFragment();
-        fragment.setArguments(bundle);
-        FragmentManager fragmentManager = homeFragment.getFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.setCustomAnimations(R.anim.slide_out_left,R.anim.slide_in_right);
-        transaction.replace(R.id.nav_host_fragment, fragment);
-        transaction.commit();
+        Fragment myFragment = new PlayMusicFragment();
+        myFragment.setArguments(bundle);
+        activity.getSupportFragmentManager().beginTransaction().replace(R.id.container, myFragment).addToBackStack(null).commit();
+        MainActivity.slidingUpPanelLayout();
     }
 
 }

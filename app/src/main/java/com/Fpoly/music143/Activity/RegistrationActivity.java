@@ -65,6 +65,7 @@ public class RegistrationActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Password too short, enter minimum 6 characters!", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                // Thêm user vào firebase Authentication
                 firebaseAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(RegistrationActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
@@ -75,6 +76,7 @@ public class RegistrationActivity extends AppCompatActivity {
                                 } else {
                                     final String ID = firebaseAuth.getCurrentUser().getUid();
                                     final UserDAO userDAO = new UserDAO(RegistrationActivity.this);
+                                    // Gọi lại hàm Thêm user vào Firestore
                                     userDAO.signUp(ID, name, password, email, new SucessCallBack() {
                                         @Override
                                         public void getCallBack(Boolean isSucees) {
@@ -83,7 +85,6 @@ public class RegistrationActivity extends AppCompatActivity {
                                                 userInfor.setID(ID);
                                                 Toast.makeText(RegistrationActivity.this, "Đăng Ký Thành Công", Toast.LENGTH_SHORT).show();
                                                 Log.e("login_error","Đăng Ký Thành Công");
-
                                                 startActivity(new Intent(RegistrationActivity.this, MainActivity.class));
                                                 overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
                                                 finish();

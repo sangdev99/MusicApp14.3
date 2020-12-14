@@ -11,11 +11,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.Fpoly.music143.Activity.MainActivity;
 import com.Fpoly.music143.Fragment.Music.PlayMusicFragment;
 import com.Fpoly.music143.Interface.ItemClickListener;
 import com.Fpoly.music143.Fragment.Search.SongByKindFragment;
@@ -56,7 +58,7 @@ public class SongByKindAdapter extends RecyclerView.Adapter<SongByKindAdapter.Vi
         holder.setItemClickListener(new ItemClickListener() {
             @Override
             public void onClick(View view, int position, boolean isLongClick) {
-                ChangeFragment(position);
+                ChangeFragment(position,view);
             }
         });
     }
@@ -94,16 +96,14 @@ public class SongByKindAdapter extends RecyclerView.Adapter<SongByKindAdapter.Vi
         }
     }
 
-    private void ChangeFragment(int position){
+    private void ChangeFragment(int position, View view){
+        AppCompatActivity activity = (AppCompatActivity) view.getContext();
         Bundle bundle = new Bundle();
         bundle.putParcelable("Songs",songArrayList.get(position));
         bundle.putInt("fragment",3);
-        Fragment fragment = new PlayMusicFragment();
-        fragment.setArguments(bundle);
-        FragmentManager fragmentManager = songByKindFragment.getFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.setCustomAnimations(R.anim.slide_out_left,R.anim.slide_in_right);
-        transaction.replace(R.id.nav_host_fragment, fragment);
-        transaction.commit();
+        Fragment myFragment = new PlayMusicFragment();
+        myFragment.setArguments(bundle);
+        activity.getSupportFragmentManager().beginTransaction().replace(R.id.container, myFragment).addToBackStack(null).commit();
+        MainActivity.slidingUpPanelLayout();
     }
 }

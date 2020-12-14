@@ -13,11 +13,13 @@ import android.widget.LinearLayout;
 import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.Fpoly.music143.Activity.MainActivity;
 import com.Fpoly.music143.Fragment.Account.AccountFragment;
 import com.Fpoly.music143.Fragment.Music.PlayMusicFragment;
 import com.Fpoly.music143.Fragment.UserPlayList.Apdater.AddItemPlayListAdapter;
@@ -80,9 +82,9 @@ public class PlaylistFragment extends Fragment {
                     }
                     Fragment fragment = new PlayMusicFragment();
                     fragment.setArguments(bundle1);
-                    changeFragment(fragment,true);
+                    changeFragment(view, fragment,true);
                 }else {
-                    changeFragment(new AccountFragment(),true);
+                    changeFragment(view, new AccountFragment(),false);
                 }
 
             }
@@ -167,16 +169,20 @@ public class PlaylistFragment extends Fragment {
         });
     }
 
-    private void changeFragment(Fragment fragment, boolean isback){
+    private void changeFragment(View view , Fragment fragment, boolean isback){
         FragmentTransaction fragmentTransaction =this.getFragmentManager().beginTransaction();
         if(isback){
-            fragmentTransaction.setCustomAnimations(R.anim.slide_in_left,R.anim.slide_out_right);
-        }else {
             fragmentTransaction.setCustomAnimations(R.anim.slide_out_left, R.anim.slide_in_right);
+            AppCompatActivity activity = (AppCompatActivity) view.getContext();
+            activity.getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).addToBackStack(null).commit();
+            MainActivity.slidingUpPanelLayout();
+        }else {
+            fragmentTransaction.setCustomAnimations(R.anim.slide_in_left,R.anim.slide_out_right);
+            fragmentTransaction.replace(R.id.nav_host_fragment,fragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
         }
-        fragmentTransaction.replace(R.id.nav_host_fragment,fragment);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+
 
     }
 

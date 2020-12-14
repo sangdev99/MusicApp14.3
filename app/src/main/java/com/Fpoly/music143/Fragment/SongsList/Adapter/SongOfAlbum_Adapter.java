@@ -11,11 +11,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.Fpoly.music143.Activity.MainActivity;
 import com.Fpoly.music143.Fragment.Music.PlayMusicFragment;
 import com.Fpoly.music143.Fragment.SongsList.SongsListFragment;
 import com.Fpoly.music143.Model.Song;
@@ -81,17 +83,15 @@ public class SongOfAlbum_Adapter extends RecyclerView.Adapter<SongOfAlbum_Adapte
         }
     }
 
-    private void ChangeFragment(int position) {
+    private void ChangeFragment(int position, View view){
+        AppCompatActivity activity = (AppCompatActivity) view.getContext();
         Bundle bundle = new Bundle();
-        bundle.putParcelable("Songs", songArrayList.get(position));
-        bundle.putInt("fragment", 1);
-        Fragment fragment = new PlayMusicFragment();
-        fragment.setArguments(bundle);
-        FragmentManager fragmentManager = songsListFragment.getFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.setCustomAnimations(R.anim.slide_out_left, R.anim.slide_in_right);
-        transaction.replace(R.id.nav_host_fragment, fragment);
-        transaction.commit();
+        bundle.putParcelable("Songs",songArrayList.get(position));
+        bundle.putInt("fragment",4);
+        Fragment myFragment = new PlayMusicFragment();
+        myFragment.setArguments(bundle);
+        activity.getSupportFragmentManager().beginTransaction().replace(R.id.container, myFragment).addToBackStack(null).commit();
+        MainActivity.slidingUpPanelLayout();
     }
 
    /* private void DoDelete(final int position){

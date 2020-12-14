@@ -13,6 +13,7 @@ import android.graphics.PorterDuff;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -29,8 +30,10 @@ import android.widget.Toast;
 import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
@@ -71,7 +74,7 @@ public class PlayMusicFragment extends Fragment implements ActionPlaying, Servic
     SeekBar sktime;
     ImageButton imgbtnsuffle,imgbtnpre,imgbtnplay,imgbtnnext,imgbtnrepeat,imgbtnlike,imgbtnplaylist;
     ViewPager viewpagerplaynhac;
-    MediaPlayer mediaPlayer;
+    public static MediaPlayer mediaPlayer = new MediaPlayer() ;
     PlayMp3 playMp3 = new PlayMp3();
     Fragment_Dia_Nhac fragment_dia_nhac;
     Fragment_Play_Danh_Sach_Cac_Bai_Hat fragment_play_danh_sach_cac_bai_hat;
@@ -86,33 +89,51 @@ public class PlayMusicFragment extends Fragment implements ActionPlaying, Servic
     boolean next = false;
     Boolean isFavorites=false;
     MediaSessionCompat mediaSession;
-    MusicService musicService;
+    MusicService musicService = new MusicService();
     BottomNavigationView navBar ;
     private DotsIndicator dotsIndicator_music;
 
+    private String TAG = "Lifecycle" ;
+
+
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d(TAG,"onCreateView") ;
         View root = inflater.inflate(R.layout.activity_play_music,container,false);
         toolbar =root.findViewById(R.id.toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setNavigationIcon(R.drawable.ic_keyboard_arrow_left_black_24dp);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                stop = true;
-                mangbaihat.clear();
-                mediaPlayer.stop();
-                changeFragment();
-            }
-        });
-        Log.e("stop", String.valueOf(stop)) ;
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
+//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                stop = true;
+//                mangbaihat.clear();
+//                mediaPlayer.stop();
+//                changeFragment();
+
+//            }
+//        });
+
+//            mediaPlayer = MusicService.mediaPlayer;
+
+//            Log.e("stop", String.valueOf(stop)) ;
+//            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+//            StrictMode.setThreadPolicy(policy);
+//            try {
+//                if (mediaPlayer.isPlaying()) {
+//                    mediaPlayer.stop();
+//                    mediaPlayer.release();
+//                }
+//            } catch (Exception e) {}
+
+
         getDataFromIntent();
         init(root);
         eventClick();
+
         return root;
 
     }
+
     //Hàm bắt các sự kiện nhấn của các nút
     private void eventClick() {
         final Handler handler = new Handler();
@@ -129,9 +150,6 @@ public class PlayMusicFragment extends Fragment implements ActionPlaying, Servic
                 }
             }
         },500);
-
-        // hide bottom
-//        navBar.visibility = View.GONE;
 
         //Nút Chơi Nhạc
         imgbtnplay.setOnClickListener(new View.OnClickListener() {
@@ -215,19 +233,24 @@ public class PlayMusicFragment extends Fragment implements ActionPlaying, Servic
         });
     }
     //Hàm lấy dữ liệu
-    private void getDataFromIntent() {
-        Bundle bundle = getArguments();
-        //Nhận biết từ fragment nào gọi đến
-        fragment = bundle.getInt("fragment");
-        //Nhận dữ liệu từ các fragment truyền qua
-        Song song = bundle.getParcelable("Songs");
-        if(song==null){
-            mangbaihat = bundle.getParcelableArrayList("MultipleSongs");
-        }else{
-            mangbaihat.clear();
-            mangbaihat.add(song);
+    public void getDataFromIntent() {
+        Log.d(TAG,"getDataFromIntent") ;
+        try {
+            Bundle bundle = getArguments();
+            //Nhận biết từ fragment nào gọi đến
+            fragment = (4);
+//            fragment = bundle.getInt("fragment");
+            //Nhận dữ liệu từ các fragment truyền qua
+//            Song song = MusicService.song;
+            Song song = bundle.getParcelable("Songs");
+            if(song==null){
+                mangbaihat = bundle.getParcelableArrayList("MultipleSongs");
+            }else{
+                mangbaihat.clear();
+                mangbaihat.add(song);
+            }
+        } catch (Exception e) {}
         }
-    }
     //Hàm play bài hát
     @Override
     public void playClicked() {
@@ -275,6 +298,7 @@ public class PlayMusicFragment extends Fragment implements ActionPlaying, Servic
                     position = 0;
                 }
                 new PlayMp3().execute(mangbaihat.get(position).getLink());
+//                musicService.playClicked(mangbaihat.get(CurrentPosition));
                 fragment_dia_nhac.Playnhac(mangbaihat.get(position).getImage());
                 toolbar.setTitle(mangbaihat.get(position).getName());
 
@@ -302,7 +326,7 @@ public class PlayMusicFragment extends Fragment implements ActionPlaying, Servic
                 imgbtnplaylist.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        addPlayList(mangbaihat.get(0).getID(),position);
+                        addPlayList(v, mangbaihat.get(0).getID(),position);
                     }
                 });
                 showNotification(R.drawable.ic_pause_circle_filled_black_24dp);
@@ -351,6 +375,8 @@ public class PlayMusicFragment extends Fragment implements ActionPlaying, Servic
                     position = index;
                 }
                 new PlayMp3().execute(mangbaihat.get(position).getLink());
+//                musicService.playClicked(mangbaihat.get(CurrentPosition));
+
                 fragment_dia_nhac.Playnhac(mangbaihat.get(position).getImage());
                 toolbar.setTitle(mangbaihat.get(position).getName());
                 //Kiêm tra bài hát có nằm trong danh sách yêu thích hay không
@@ -377,7 +403,7 @@ public class PlayMusicFragment extends Fragment implements ActionPlaying, Servic
                 imgbtnplaylist.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        addPlayList(mangbaihat.get(0).getID(),position);
+                        addPlayList(v,mangbaihat.get(0).getID(),position);
                     }
                 });
                 showNotification(R.drawable.ic_pause_circle_filled_black_24dp);
@@ -414,12 +440,15 @@ public class PlayMusicFragment extends Fragment implements ActionPlaying, Servic
         imgbtnrepeat=root.findViewById(R.id.imgbtnrepeat);
         viewpagerplaynhac= root.findViewById(R.id.vpPlaynhac);
         if(mangbaihat.size()>0){
-            Bundle bundle = getArguments();
-            if(bundle.getInt("CurrentPosition")!=0){
-                CurrentPosition = bundle.getInt("CurrentPosition");
-            }else{
-                CurrentPosition = 0;
-            }
+            try {
+                Bundle bundle = getArguments();
+                if(bundle.getInt("CurrentPosition")!=0){
+                    CurrentPosition = bundle.getInt("CurrentPosition");
+                }else{
+                    CurrentPosition = 0;
+                }
+            } catch (Exception e) {}
+
             toolbar.setTitle(mangbaihat.get(CurrentPosition).getName());
 
             //Kiểm tra có nằm trong danh sách bài hát yêu thích hay không
@@ -446,11 +475,12 @@ public class PlayMusicFragment extends Fragment implements ActionPlaying, Servic
             imgbtnplaylist.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    addPlayList(mangbaihat.get(CurrentPosition).getID(),0);
+                    addPlayList(v,mangbaihat.get(CurrentPosition).getID(),0);
                 }
             });
             //Chạy bài hát và đổi hình ảnh nút play
             playMp3.execute(mangbaihat.get(CurrentPosition).getLink());
+//            musicService.playClicked(mangbaihat.get(0));
             imgbtnplay.setImageResource(R.drawable.ic_play);
             showNotification(R.drawable.ic_pause_circle_filled_black_24dp);
         }
@@ -483,28 +513,31 @@ public class PlayMusicFragment extends Fragment implements ActionPlaying, Servic
                 if(!stop){
                     //kiểm tra sự tồn tại của mediaplayer
                     if (mediaPlayer !=null){
-                        //set cho seekbar theo vị trí hiện tại của bài hát
-                        sktime.setProgress(mediaPlayer.getCurrentPosition());
-                        //format seekbar
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("mm:ss");
-                        //set thời gian chạy theo vị trí hiện tại của bài hát
-                        txttimesong.setText(simpleDateFormat.format(mediaPlayer.getCurrentPosition()));
-                        //chạy lại hàm trên
-                        handler.postDelayed(this,300);
-                        //khi bài hát kết thúc
-                        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                            @Override
-                            public void onCompletion(MediaPlayer mp) {
-                                next =true;
-                                try{
-                                    //tạm ngủ thread này 1s
-                                    Thread.sleep(1000);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
+                        try {
+                            //set cho seekbar theo vị trí hiện tại của bài hát
+                            sktime.setProgress(mediaPlayer.getCurrentPosition());
+                            //format seekbar
+                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("mm:ss");
+                            //set thời gian chạy theo vị trí hiện tại của bài hát
+                            txttimesong.setText(simpleDateFormat.format(mediaPlayer.getCurrentPosition()));
+                            //chạy lại hàm trên
+                            handler.postDelayed(this,300);
+                            //khi bài hát kết thúc
+                            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                                @Override
+                                public void onCompletion(MediaPlayer mp) {
+                                    next =true;
+                                    try{
+                                        //tạm ngủ thread này 1s
+                                        Thread.sleep(1000);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
-                            }
-                        });
-                    }
+                            });
+                        } catch (Exception e) {}
+                        }
+
                 }else {
                     handler.removeCallbacks(this);
                 }
@@ -538,6 +571,8 @@ public class PlayMusicFragment extends Fragment implements ActionPlaying, Servic
                             position = 0;
                         }
                         new PlayMp3().execute(mangbaihat.get(position).getLink());
+//                        musicService.playClicked(mangbaihat.get(CurrentPosition));
+
                         fragment_dia_nhac.Playnhac(mangbaihat.get(position).getImage());
                         toolbar.setTitle(mangbaihat.get(position).getName());
                     }
@@ -592,11 +627,9 @@ public class PlayMusicFragment extends Fragment implements ActionPlaying, Servic
         ft.commit();
     }
     //Hàm thêm vào danh sách playlist cá nhân
-    private void addPlayList(String ID,int position){
+    private void addPlayList(View view, String ID,int position){
         if(userInfor.getUsername()!=null){
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.setCustomAnimations(R.anim.slide_out_left,R.anim.slide_in_right);
-            mediaPlayer.stop();
+//            mediaPlayer.stop();
             Fragment fragment = new PlaylistFragment();
             Log.d("chuyenPlaylist",mangbaihat.size() + "") ;
             Log.d("chuyenPlaylist",position + "") ;
@@ -606,9 +639,11 @@ public class PlayMusicFragment extends Fragment implements ActionPlaying, Servic
             bundle.putInt("Position",position);
             fragment.setArguments(bundle);
             userInfor.setTempID(ID);
-
-            ft.replace(R.id.nav_host_fragment,fragment);
-            ft.commit();
+            // change Fragment Playlist
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.setCustomAnimations(R.anim.slide_out_left,R.anim.slide_in_right);
+            AppCompatActivity activity = (AppCompatActivity) view.getContext();
+            activity.getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
         }else{
             Toast.makeText(getContext(),"Bạn Cần Đăng Nhập Để Thực Hiện Chức Năng Này",Toast.LENGTH_SHORT).show();
         }
@@ -753,25 +788,32 @@ public class PlayMusicFragment extends Fragment implements ActionPlaying, Servic
     //Hàm được gọi khi thoát khỏi fragment này, tắt nhạc và dừng luồng lấy thời gian của bài hát
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
-        stop = true;
+        Log.d(TAG,"onDestroyView") ;
 //        mangbaihat.clear();
-        mediaPlayer.stop();
+        if (mediaPlayer.isPlaying()) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+        }
+        super.onDestroyView();
+//        stop = true;
+//        mangbaihat.clear();
+//        mediaPlayer.stop();
     }
 
     @Override
     public void onResume() {
+        Log.d(TAG,"onResume") ;
         super.onResume();
-        Intent intent = new Intent(getContext(), MusicService.class);
-        getActivity().bindService(intent, this, BIND_AUTO_CREATE);
-
+            Intent intent = new Intent(getContext(), MusicService.class);
+            getActivity().bindService(intent, this, BIND_AUTO_CREATE);
     }
 
-    @Override
+ /*   @Override
     public void onPause() {
+        Log.d(TAG,"onPause") ;
         super.onPause();
         getActivity().unbindService(this);
-    }
+    }*/
 
     @Override
     public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
@@ -786,4 +828,6 @@ public class PlayMusicFragment extends Fragment implements ActionPlaying, Servic
         musicService = null;
         Log.e("Disconected", musicService + "");
     }
+
+
 }
