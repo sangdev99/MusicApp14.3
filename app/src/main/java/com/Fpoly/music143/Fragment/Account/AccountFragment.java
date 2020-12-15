@@ -22,14 +22,20 @@ import androidx.fragment.app.FragmentTransaction;
 import com.Fpoly.music143.Activity.FacebookAccount;
 import com.Fpoly.music143.Activity.GoogleAccount;
 import com.Fpoly.music143.Activity.LoginActivity;
+import com.Fpoly.music143.Activity.SplashActivity;
+import com.Fpoly.music143.Fragment.Music.PlayMusicFragment;
 import com.Fpoly.music143.Fragment.SongsList.SongsListFragment;
 import com.Fpoly.music143.Fragment.UserPlayList.PlaylistFragment;
 import com.Fpoly.music143.Model.UserInfor;
 import com.Fpoly.music143.R;
+import com.Fpoly.music143.txt.blank;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.ArrayList;
+
+import static com.Fpoly.music143.Activity.MainActivity.slidingUpPanelLayout;
 
 public class AccountFragment extends Fragment {
     TextView tvUsername,tvUserEmail;
@@ -116,16 +122,18 @@ public class AccountFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b){
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, new blank()).addToBackStack(null).commit();
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                     saveNightModeState(true);
-                    getActivity().recreate();
-                }
-                else {
+                    startActivity(new Intent(getContext(), SplashActivity.class));
+                } else {
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, new blank()).addToBackStack(null).commit();
+                    slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                     saveNightModeState(false);
-                    getActivity().recreate();
+                    startActivity(new Intent(getContext(), SplashActivity.class));
                 }
-
+                getActivity().overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
             }
         });
 
@@ -146,10 +154,8 @@ public class AccountFragment extends Fragment {
     public void checkNightModeActivated(){
         if(sharedPreferences.getBoolean(KEY_ISNIGHTMODE, true)){
             swdarkmode.setChecked(true);
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }else {
             swdarkmode.setChecked(false);
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
     }
 

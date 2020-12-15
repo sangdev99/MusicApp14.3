@@ -74,8 +74,8 @@ public class HomeFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 //        Log.d("devH", userInfor.getID());
+//        getUser(userInfor.getID());
         init(root) ;
-        getUser(userInfor.getID());
         autoSwipe() ;
         return root;
     }

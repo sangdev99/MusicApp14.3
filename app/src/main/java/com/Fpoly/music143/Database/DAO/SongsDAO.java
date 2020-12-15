@@ -114,7 +114,7 @@ public class SongsDAO {
     public void getNewSongs(final SongCallBack songCallBack) {
         // Access a Cloud Firestore instance from your Activity
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("Songs").orderBy("ID",  Query.Direction.DESCENDING).limit(3).get()
+        db.collection("Songs").orderBy("ID",  Query.Direction.DESCENDING).limit(5).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {

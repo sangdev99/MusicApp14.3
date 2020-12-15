@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import android.widget.Toolbar;
 
 import com.Fpoly.music143.Database.DAO.UserDAO;
 import com.Fpoly.music143.Database.Services.CallBack.UserCallBack;
+import com.Fpoly.music143.Fragment.Account.AccountFragment;
 import com.Fpoly.music143.Fragment.Home.HomeFragment;
 import com.Fpoly.music143.Fragment.Music.Adapter.ViewPagerPlayListNhac;
 import com.Fpoly.music143.Fragment.Music.BackgroundSoundService;
@@ -43,6 +45,7 @@ import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
@@ -58,9 +61,15 @@ import androidx.viewpager.widget.ViewPager;
 
 import java.util.ArrayList;
 
+import static com.Fpoly.music143.Fragment.Account.AccountFragment.KEY_ISNIGHTMODE;
+import static com.Fpoly.music143.Fragment.Account.AccountFragment.MyPREFERENCES;
+
 public class MainActivity extends AppCompatActivity {
     public static SlidingUpPanelLayout slidingUpPanelLayout;
     public static BottomNavigationView bottomNavigationView ;
+    SharedPreferences sharedPreferences;
+
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,7 +80,12 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
 
-        slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+
+        // check Darkmode
+        checkDarkMode();
+        Log.d("main","oncreate") ;
+
+
     }
 
 
@@ -102,6 +116,15 @@ public class MainActivity extends AppCompatActivity {
                 .start();
     }
 
+    private void checkDarkMode() {
+        sharedPreferences = this.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        if(sharedPreferences.getBoolean(KEY_ISNIGHTMODE, true)){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+    }
+
     // onBackPressed
     @Override
     public void onBackPressed() {
@@ -114,8 +137,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart() {
+        slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+        super.onStart();
+    }
+
+    @Override
     protected void onDestroy() {
-        PlayMusicFragment playMusicFragment = new PlayMusicFragment() ;
+        Log.d("main","finish") ;
+        slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
         super.onDestroy();
     }
 

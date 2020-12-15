@@ -112,7 +112,6 @@ public class PlayMusicFragment extends Fragment implements ActionPlaying, Servic
     //Hàm lấy dữ liệu
     public void getDataFromIntent() {
         Log.d(TAG,"getDataFromIntent") ;
-        try {
             Bundle bundle = getArguments();
             //Nhận biết từ fragment nào gọi đến
             fragment = (4);
@@ -126,7 +125,6 @@ public class PlayMusicFragment extends Fragment implements ActionPlaying, Servic
                 mangbaihat.clear();
                 mangbaihat.add(song);
             }
-        } catch (Exception e) {}
     }
     //Hàm ánh xạ, và chơi nhạc ban đầu
     private void init(View root) {
