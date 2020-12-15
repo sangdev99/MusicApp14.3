@@ -173,8 +173,8 @@ public class AddItemPlayListAdapter extends RecyclerView.Adapter<AddItemPlayList
                     public void onClick(DialogInterface dialogInterface, int i) {}
                 })
                 .show();
-        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#F9696F"));
-        alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#F9696F"));
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#00ACC1"));
+        alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#00ACC1"));
     }
 
     //Hàm Thêm bài hát vào playlist, được gọi khi người dùng nhấn vào tên playlist cần thêm vào

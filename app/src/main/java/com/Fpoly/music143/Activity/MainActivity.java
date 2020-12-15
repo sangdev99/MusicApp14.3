@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         // setBottom
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
-
+        slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
         getUser(userInfor.getID());
         checkDarkMode();
         Log.d("main","oncreate") ;
@@ -159,14 +159,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
-        slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+        Log.d("main","onStart") ;
         super.onStart();
     }
 
     @Override
     protected void onDestroy() {
         Log.d("main","finish") ;
-        slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
         super.onDestroy();
     }
 

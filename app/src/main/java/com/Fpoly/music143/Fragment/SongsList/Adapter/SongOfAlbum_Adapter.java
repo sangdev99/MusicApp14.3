@@ -122,8 +122,8 @@ public class SongOfAlbum_Adapter extends RecyclerView.Adapter<SongOfAlbum_Adapte
                     public void onClick(DialogInterface dialogInterface, int i) {}
                 })
                 .show();
-        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#F9696F"));
-        alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#F9696F"));
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#00ACC1"));
+        alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#00ACC1"));
     }*/
 }
 

@@ -9,7 +9,6 @@ android:orientation="vertical"
 android:background="#FFFFFF"
 android:weightSum="10">
 
-<!--
 <Toolbar
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
@@ -155,7 +154,6 @@ android:weightSum="10">
 
     </LinearLayout>
 </LinearLayout>
--->
 
 
 </LinearLayout>

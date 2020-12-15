@@ -159,8 +159,8 @@ public class SongOfFavorite_Adapter extends RecyclerView.Adapter<SongOfFavorite_
                     public void onClick(DialogInterface dialogInterface, int i) {}
                 })
                 .show();
-        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#F9696F"));
-        alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#F9696F"));
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#00ACC1"));
+        alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#00ACC1"));
     }
 }
 
