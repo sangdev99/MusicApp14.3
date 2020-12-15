@@ -63,13 +63,13 @@ import java.util.ArrayList;
 
 import static com.Fpoly.music143.Fragment.Account.AccountFragment.KEY_ISNIGHTMODE;
 import static com.Fpoly.music143.Fragment.Account.AccountFragment.MyPREFERENCES;
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class MainActivity extends AppCompatActivity {
     public static SlidingUpPanelLayout slidingUpPanelLayout;
     public static BottomNavigationView bottomNavigationView ;
     SharedPreferences sharedPreferences;
-
-
+    UserInfor userInfor = UserInfor.getInstance();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,8 +80,7 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
 
-
-        // check Darkmode
+        getUser(userInfor.getID());
         checkDarkMode();
         Log.d("main","oncreate") ;
 
@@ -136,6 +135,28 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // check user
+    private void getUser(final String userID) {
+        final UserDAO userDAO = new UserDAO(getApplicationContext());
+        userDAO.getUser(userID, new UserCallBack() {
+            @Override
+            public void getCallback(ArrayList<UserInfor> userInfors) {
+//                Log.d("test", userInfors.get(0).toString());
+                if(userInfors.size()>0){
+                    userInfor.setUsername(userInfors.get(0).getUsername());
+                    Log.d("test", userInfors.get(0).getUsername());
+                    userInfor.setEmail(userInfors.get(0).getEmail());
+                    userInfor.setFavorites(userInfors.get(0).getFavorites());
+                    userInfor.setLinkFaceBook(userInfors.get(0).getLinkFaceBook());
+                    userInfor.setLinkGmail(userInfors.get(0).getLinkGmail());
+                }else{
+                    Toast.makeText(getApplicationContext(),"Bạn Chưa Có Tài Khoản hệ Thống, Vui Lòng Đăng Ký",Toast.LENGTH_SHORT).show();
+                }
+            }
+
+        });
+    }
+
     @Override
     protected void onStart() {
         slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
@@ -149,24 +170,6 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
- /*LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
-                new IntentFilter("custom-event-name"));
-   private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            // Get extra data included in the Intent
-            String message = intent.getStringExtra("message");
-            Log.d("receiver", "Got message: " + message);
-            slidingUpPanelLayout() ;
-        }
-    };*/
-
- /*
-    UserInfor userInfor = UserInfor.getInstance();
-    PlayMusicFragment playMusicFragment = new PlayMusicFragment();
-    MusicService musicService ;
-    private String TAG = "MainActivity" ;
-    FragmentManager fragmentManager;*/
 
 
 }

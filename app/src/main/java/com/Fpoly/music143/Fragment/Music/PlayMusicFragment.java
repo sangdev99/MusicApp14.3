@@ -24,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,7 +34,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
@@ -45,14 +45,11 @@ import com.Fpoly.music143.Fragment.Music.Notification.ActionPlaying;
 import com.Fpoly.music143.Fragment.Music.Notification.MusicService;
 import com.Fpoly.music143.Fragment.Music.Notification.NotificationReceiver;
 import com.Fpoly.music143.Fragment.UserPlayList.PlaylistFragment;
-import com.Fpoly.music143.Fragment.SongsList.SongsListFragment;
-import com.Fpoly.music143.Fragment.Home.HomeFragment;
-import com.Fpoly.music143.Fragment.Search.SearchFragment;
-import com.Fpoly.music143.Fragment.Search.SongByKindFragment;
 import com.Fpoly.music143.Model.Song;
 import com.Fpoly.music143.Model.UserInfor;
 import com.Fpoly.music143.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.squareup.picasso.Picasso;
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
 import java.io.IOException;
@@ -70,7 +67,6 @@ import static com.Fpoly.music143.Fragment.Music.Notification.ApplicationClass.CH
 public class PlayMusicFragment extends Fragment implements ActionPlaying, ServiceConnection {
     public static ArrayList<Song> mangbaihat = new ArrayList<>();
     public ViewPagerPlayListNhac adapternhac;
-    Toolbar toolbar;
     TextView txttimesong,txttotaltimesong;
     SeekBar sktime;
     ImageButton imgbtnsuffle,imgbtnpre,imgbtnplay,imgbtnnext,imgbtnrepeat,imgbtnlike,imgbtnplaylist;
@@ -81,7 +77,6 @@ public class PlayMusicFragment extends Fragment implements ActionPlaying, Servic
     Fragment_Play_Danh_Sach_Cac_Bai_Hat fragment_play_danh_sach_cac_bai_hat;
     int fragment;
     int CurrentPosition;
-    Fragment oldFragment;
     UserInfor userInfor = UserInfor.getInstance();
     boolean stop = false  ;
     int position = 0 ;
@@ -93,6 +88,12 @@ public class PlayMusicFragment extends Fragment implements ActionPlaying, Servic
     MusicService musicService = new MusicService();
     BottomNavigationView navBar ;
     private DotsIndicator dotsIndicator_music;
+    ImageView songs_cover_one ;
+    TextView songs_title,songs_artist_name ;
+    ImageButton play_button ;
+
+
+
 
     private String TAG = "Lifecycle" ;
 
@@ -128,9 +129,6 @@ public class PlayMusicFragment extends Fragment implements ActionPlaying, Servic
     }
     //Hàm ánh xạ, và chơi nhạc ban đầu
     private void init(View root) {
-        toolbar =root.findViewById(R.id.toolbar);
-        toolbar.setTitleTextColor(Color.WHITE);
-        toolbar.setNavigationIcon(R.drawable.ic_keyboard_arrow_left_black_24dp);
         dotsIndicator_music = root.findViewById(R.id.dotsIndicator_music) ;
         navBar = root.findViewById(R.id.nav_view);
         mediaSession = new MediaSessionCompat(getContext(),"PlayerAudio");
@@ -147,6 +145,14 @@ public class PlayMusicFragment extends Fragment implements ActionPlaying, Servic
         imgbtnnext=root.findViewById(R.id.imgbtnnext);
         imgbtnrepeat=root.findViewById(R.id.imgbtnrepeat);
         viewpagerplaynhac= root.findViewById(R.id.vpPlaynhac);
+
+        songs_cover_one = root.findViewById(R.id.songs_cover_one)  ;
+        songs_title = root.findViewById(R.id.songs_title)  ;
+        songs_artist_name = root.findViewById(R.id.songs_artist_name)  ;
+        play_button = root.findViewById(R.id.play_button)  ;
+
+
+
         if(mangbaihat.size()>0){
             try {
                 Bundle bundle = getArguments();
@@ -157,16 +163,22 @@ public class PlayMusicFragment extends Fragment implements ActionPlaying, Servic
                 }
             } catch (Exception e) {}
 
-            toolbar.setTitle(mangbaihat.get(CurrentPosition).getName());
+            Picasso.get().load(mangbaihat.get(CurrentPosition).getImage()).into(songs_cover_one);
+            songs_title.setText(mangbaihat.get(CurrentPosition).getName());
+            songs_artist_name.setText(mangbaihat.get(CurrentPosition).getSinger());
+
+
+
+
 
             //Kiểm tra có nằm trong danh sách bài hát yêu thích hay không
             checkDuplicate(mangbaihat.get(CurrentPosition).getID());
             //Thay đổi màu trái tim tùy theo bài hát
             if(isFavorites){
-                imgbtnlike.setColorFilter(getResources().getColor(R.color.yellow),
+                imgbtnlike.setColorFilter(getResources().getColor(R.color.red),
                         PorterDuff.Mode.SRC_ATOP);
             }else{
-                imgbtnlike.setColorFilter(getResources().getColor(R.color.white),
+                imgbtnlike.setColorFilter(getResources().getColor(R.color.primaryTitleColor),
                         PorterDuff.Mode.SRC_ATOP);
             }
             //Khi nhấn vào nút yêu thích(trái tim)
@@ -190,6 +202,7 @@ public class PlayMusicFragment extends Fragment implements ActionPlaying, Servic
             playMp3.execute(mangbaihat.get(CurrentPosition).getLink());
 //            musicService.playClicked(mangbaihat.get(0));
             imgbtnplay.setImageResource(R.drawable.ic_play);
+            play_button.setImageResource(R.drawable.ic_play);
             showNotification(R.drawable.ic_pause_circle_filled_black_24dp);
         }
         //Đổ dữ liệu hình ảnh lên fragment đĩa nhạc và danh sách lên fragment playdanhsach
@@ -223,6 +236,12 @@ public class PlayMusicFragment extends Fragment implements ActionPlaying, Servic
 
         //Nút Chơi Nhạc
         imgbtnplay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                playClicked();
+            }
+        });
+        play_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 playClicked();
@@ -310,9 +329,11 @@ public class PlayMusicFragment extends Fragment implements ActionPlaying, Servic
         if(mediaPlayer.isPlaying()){
             mediaPlayer.pause();
             imgbtnplay.setImageResource(R.drawable.ic_play);
+            play_button.setImageResource(R.drawable.ic_play);
             showNotification(R.drawable.ic_play);
         }else{
             mediaPlayer.start();
+            play_button.setImageResource(R.drawable.ic_pause_circle_filled_black_24dp);
             imgbtnplay.setImageResource(R.drawable.ic_pause_circle_filled_black_24dp);
             showNotification(R.drawable.ic_pause_circle_filled_black_24dp);
         }
@@ -353,16 +374,17 @@ public class PlayMusicFragment extends Fragment implements ActionPlaying, Servic
                 new PlayMp3().execute(mangbaihat.get(position).getLink());
 //                musicService.playClicked(mangbaihat.get(CurrentPosition));
                 fragment_dia_nhac.Playnhac(mangbaihat.get(position).getImage());
-                toolbar.setTitle(mangbaihat.get(position).getName());
-
+                Picasso.get().load(mangbaihat.get(CurrentPosition).getImage()).into(songs_cover_one);
+                songs_title.setText(mangbaihat.get(CurrentPosition).getName());
+                songs_artist_name.setText(mangbaihat.get(CurrentPosition).getSinger());
                 //Kiểm tra bài hát có nằm trong danh sách yêu thích hay không
                 checkDuplicate(mangbaihat.get(position).getID());
                 //Đổi màu trái tim tùy theo bài hát
                 if(isFavorites){
-                    imgbtnlike.setColorFilter(getResources().getColor(R.color.yellow),
+                    imgbtnlike.setColorFilter(getResources().getColor(R.color.red),
                             PorterDuff.Mode.SRC_ATOP);
                 }else{
-                    imgbtnlike.setColorFilter(getResources().getColor(R.color.white),
+                    imgbtnlike.setColorFilter(getResources().getColor(R.color.primaryTitleColor),
                             PorterDuff.Mode.SRC_ATOP);
                 }
                 //Khi nhấn vào nút yêu thích(trái tim)
@@ -431,15 +453,17 @@ public class PlayMusicFragment extends Fragment implements ActionPlaying, Servic
 //                musicService.playClicked(mangbaihat.get(CurrentPosition));
 
                 fragment_dia_nhac.Playnhac(mangbaihat.get(position).getImage());
-                toolbar.setTitle(mangbaihat.get(position).getName());
+                Picasso.get().load(mangbaihat.get(CurrentPosition).getImage()).into(songs_cover_one);
+                songs_title.setText(mangbaihat.get(CurrentPosition).getName());
+                songs_artist_name.setText(mangbaihat.get(CurrentPosition).getSinger());
                 //Kiêm tra bài hát có nằm trong danh sách yêu thích hay không
                 checkDuplicate(mangbaihat.get(position).getID());
                 //Đổi màu trái tim tùy theo danh sách bài hát
                 if(isFavorites){
-                    imgbtnlike.setColorFilter(getResources().getColor(R.color.yellow),
+                    imgbtnlike.setColorFilter(getResources().getColor(R.color.red),
                             PorterDuff.Mode.SRC_ATOP);
                 }else{
-                    imgbtnlike.setColorFilter(getResources().getColor(R.color.white),
+                    imgbtnlike.setColorFilter(getResources().getColor(R.color.primaryTitleColor),
                             PorterDuff.Mode.SRC_ATOP);
                 }
                 //Khi nhấn vào nút yêu thích(Trái tim)
@@ -554,7 +578,9 @@ public class PlayMusicFragment extends Fragment implements ActionPlaying, Servic
 //                        musicService.playClicked(mangbaihat.get(CurrentPosition));
 
                         fragment_dia_nhac.Playnhac(mangbaihat.get(position).getImage());
-                        toolbar.setTitle(mangbaihat.get(position).getName());
+                        Picasso.get().load(mangbaihat.get(CurrentPosition).getImage()).into(songs_cover_one);
+                        songs_title.setText(mangbaihat.get(CurrentPosition).getName());
+                        songs_artist_name.setText(mangbaihat.get(CurrentPosition).getSinger());
                     }
                     //sau khi click xong vô hiệu 2 nút;
                     imgbtnpre.setClickable(false);
@@ -624,7 +650,7 @@ public class PlayMusicFragment extends Fragment implements ActionPlaying, Servic
                     public void getCallBack(Boolean isSucees) {
                         if (isSucees) {
                             //Khi thành công đổi màu trái tim
-                            imgbtnlike.setColorFilter(getResources().getColor(R.color.yellow),
+                            imgbtnlike.setColorFilter(getResources().getColor(R.color.red),
                                     PorterDuff.Mode.SRC_ATOP);
                             isFavorites = true;
                             //Sửa lại danh sách bài hát yêu thích của client
@@ -644,7 +670,7 @@ public class PlayMusicFragment extends Fragment implements ActionPlaying, Servic
                     @Override
                     public void getCallBack(Boolean isSucees) {
                         if (isSucees) {
-                            imgbtnlike.setColorFilter(getResources().getColor(R.color.white),
+                            imgbtnlike.setColorFilter(getResources().getColor(R.color.primaryTitleColor),
                                     PorterDuff.Mode.SRC_ATOP);
                             isFavorites = false;
                             UserInfor userInfor = UserInfor.getInstance();
@@ -689,7 +715,9 @@ public class PlayMusicFragment extends Fragment implements ActionPlaying, Servic
             e.printStackTrace();
         }
         mediaPlayer.start();
+        MainActivity.slidingUpPanelLayout();
         imgbtnplay.setImageResource(R.drawable.ic_pause_circle_filled_black_24dp);
+        play_button.setImageResource(R.drawable.ic_pause_circle_filled_black_24dp);
         TimeSong();
         UpdateTime();
     }
@@ -768,7 +796,6 @@ public class PlayMusicFragment extends Fragment implements ActionPlaying, Servic
     public void onResume() {
         Log.d(TAG,"onResume") ;
         super.onResume();
-        MainActivity.slidingUpPanelLayout();
         Intent intent = new Intent(getContext(), MusicService.class);
         getActivity().bindService(intent, this, BIND_AUTO_CREATE);
     }

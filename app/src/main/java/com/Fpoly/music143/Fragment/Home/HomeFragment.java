@@ -60,7 +60,6 @@ public class HomeFragment extends Fragment {
     SuggestAdapter suggestAdapter;
     RankAdapter rankAdapter;
     SongNewAdapter songNewAdapter ;
-    UserInfor userInfor = UserInfor.getInstance();
 
     DotsIndicator dotsIndicator;
     ViewPager viewPager ;
@@ -73,8 +72,6 @@ public class HomeFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-//        Log.d("devH", userInfor.getID());
-//        getUser(userInfor.getID());
         init(root) ;
         autoSwipe() ;
         return root;
@@ -142,27 +139,6 @@ public class HomeFragment extends Fragment {
             }
         });
         dialog.dismiss();
-    }
-
-    private void getUser(final String userID) {
-        final UserDAO userDAO = new UserDAO(getContext());
-        userDAO.getUser(userID, new UserCallBack() {
-            @Override
-            public void getCallback(ArrayList<UserInfor> userInfors) {
-//                Log.d("test", userInfors.get(0).toString());
-                if(userInfors.size()>0){
-                    userInfor.setUsername(userInfors.get(0).getUsername());
-                    Log.d("test", userInfors.get(0).getUsername());
-                    userInfor.setEmail(userInfors.get(0).getEmail());
-                    userInfor.setFavorites(userInfors.get(0).getFavorites());
-                    userInfor.setLinkFaceBook(userInfors.get(0).getLinkFaceBook());
-                    userInfor.setLinkGmail(userInfors.get(0).getLinkGmail());
-                }else{
-                    Toast.makeText(getApplicationContext(),"Bạn Chưa Có Tài Khoản hệ Thống, Vui Lòng Đăng Ký",Toast.LENGTH_SHORT).show();
-                }
-            }
-
-        });
     }
 
     private void autoSwipe() {
