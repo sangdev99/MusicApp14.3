@@ -1,0 +1,56 @@
+  Picasso.get().load(mangbaihat.get(CurrentPosition).getImage()).into(songs_cover_one);
+                songs_title.setText(mangbaihat.get(CurrentPosition).getName());
+                songs_artist_name.setText(mangbaihat.get(CurrentPosition).getSinger());
+
+
+  /*LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver,
+                 new IntentFilter("custom-event-name"));
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+         @Override
+         public void onReceive(Context context, Intent intent) {
+             // Get extra data included in the Intent
+             String message = intent.getStringExtra("message");
+             Log.d("receiver", "Got message: " + message);
+             slidingUpPanelLayout() ;
+         }
+     };*/
+
+
+
+  /*
+     UserInfor userInfor = UserInfor.getInstance();
+     PlayMusicFragment playMusicFragment = new PlayMusicFragment();
+     MusicService musicService ;
+     private String TAG = "MainActivity" ;
+     FragmentManager fragmentManager;*/
+
+
+
+ try {
+                            fragment_dia_nhac.Playnhac(mangbaihat.get(0).getImage());
+                        } catch (Exception handleslow) {System.out.println(handleslow);}
+
+
+                              Log.e("stop", String.valueOf(stop)) ;
+                                    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+                                    StrictMode.setThreadPolicy(policy);
+                                    try {
+                                        if (mediaPlayer.isPlaying()) {
+                                            mediaPlayer.stop();
+                                            mediaPlayer.release();
+                                        }
+                                    } catch (Exception e) {}
+
+
+                                    //        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                                    //            @Override
+                                    //            public void onClick(View view) {
+                                    //                stop = true;
+                                    //                mangbaihat.clear();
+                                    //                mediaPlayer.stop();
+                                    //                changeFragment();
+
+                                    //            }
+                                    //        });
+
+                                    //            mediaPlayer = MusicService.mediaPlayer;
