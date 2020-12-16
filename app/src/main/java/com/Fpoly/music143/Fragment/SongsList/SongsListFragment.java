@@ -1,16 +1,20 @@
 package com.Fpoly.music143.Fragment.SongsList;
 
+
+
 import android.app.Dialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toolbar;
+import android.widget.Button;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -68,7 +72,7 @@ public class SongsListFragment extends Fragment {
             }
         });
 
-        FloatingActionButton fab = view.findViewById(R.id.fab_list);
+        ImageView fab = view.findViewById(R.id.fab_list);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -132,8 +136,8 @@ public class SongsListFragment extends Fragment {
             bundle.putParcelableArrayList("MultipleSongs",Songs);
             bundle.putInt("fragment",1);
             fragment.setArguments(bundle);
-            AppCompatActivity activity = (AppCompatActivity) view.getContext();
-            activity.getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).addToBackStack(null).commit();
+//            AppCompatActivity activity = (AppCompatActivity) view.getContext();
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).addToBackStack(null).commit();
         }else{
             bundle.putBoolean("AddMusic",false);
             fragment.setArguments(bundle);
