@@ -1,6 +1,7 @@
 package com.Fpoly.music143.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 
@@ -9,6 +10,8 @@ import com.Fpoly.music143.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.preference.PreferenceManager;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
@@ -29,6 +32,8 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "FACELOG";
     private FirebaseAuth mAuth;
     private Button btnfacebook, btngmail;
+    public static final String IDACCOUNT = "IDACCOUNT";
+
 
 
     @Override
@@ -124,7 +129,17 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(LoginActivity.this, "Có Lỗi Xảy Ra!", Toast.LENGTH_SHORT).show();
         }
     }
-//Khôi Phục Mật Khẩu================================================================================================
+//    Save data
+    private void saveData(String userID) {
+        UserInfor userInfor = UserInfor.getInstance();
+        userInfor.setID(mAuth.getCurrentUser().getUid());
+        SharedPreferences sharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(IDACCOUNT, userID);
+        editor.apply();
+    }
+    //Khôi Phục Mật Khẩu================================================================================================
 //    Dialog
     private void showRecoverPasswordDialog() {
         AlertDialog.Builder builder= new AlertDialog.Builder(this);
@@ -192,6 +207,7 @@ public class LoginActivity extends AppCompatActivity {
 
 //Chuyển Activity khi đăng nhập thành công
     private void updateUI() {
+        saveData(mAuth.getCurrentUser().getUid()) ;
         UserInfor userInfor = UserInfor.getInstance();
         userInfor.setID(mAuth.getCurrentUser().getUid());
         Log.d("demo", (mAuth.getCurrentUser().getUid())) ;
@@ -213,6 +229,7 @@ public class LoginActivity extends AppCompatActivity {
         intent.putExtra("getToken",false);
         startActivityForResult(intent,10);
     }
+
 
 }
 

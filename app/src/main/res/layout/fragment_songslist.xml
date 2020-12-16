@@ -71,7 +71,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Sky Full Of Stars"
-                        android:id="@+id/title"
+                        android:id="@+id/tvTitleSongList"
                         android:maxLines="2"
                         android:layout_below="@+id/category"
                         android:textColor="@color/primaryTitleColor"

@@ -11,6 +11,7 @@ import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.util.Log;
 import android.view.View;
@@ -61,6 +62,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import java.util.ArrayList;
 
+import static com.Fpoly.music143.Activity.LoginActivity.IDACCOUNT;
 import static com.Fpoly.music143.Fragment.Account.AccountFragment.KEY_ISNIGHTMODE;
 import static com.Fpoly.music143.Fragment.Account.AccountFragment.MyPREFERENCES;
 import static com.facebook.FacebookSdk.getApplicationContext;
@@ -80,7 +82,11 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
         slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
-        getUser(userInfor.getID());
+        SharedPreferences sharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(this);
+        String name = sharedPreferences.getString(IDACCOUNT,"123");
+        getUser(name);
+//        getUser("Ni1MnruS64T8kOffmNyHa8ixxWw1");
         checkDarkMode();
         Log.d("main","oncreate") ;
 

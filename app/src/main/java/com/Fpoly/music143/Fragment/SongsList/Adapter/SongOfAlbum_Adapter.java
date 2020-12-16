@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.Fpoly.music143.Activity.MainActivity;
 import com.Fpoly.music143.Fragment.Music.PlayMusicFragment;
 import com.Fpoly.music143.Fragment.SongsList.SongsListFragment;
+import com.Fpoly.music143.Model.Album;
 import com.Fpoly.music143.Model.Song;
 import com.Fpoly.music143.R;
 import com.squareup.picasso.Picasso;
@@ -29,6 +30,7 @@ import java.util.ArrayList;
 public class SongOfAlbum_Adapter extends RecyclerView.Adapter<SongOfAlbum_Adapter.ViewHolder> {
     Context context;
     ArrayList<Song> songArrayList;
+    ArrayList<Album> albumsArrayList;
     SongsListFragment songsListFragment;
 
     public SongOfAlbum_Adapter(Context context, ArrayList<Song> songArrayList, SongsListFragment songsListFragment) {
@@ -68,7 +70,8 @@ public class SongOfAlbum_Adapter extends RecyclerView.Adapter<SongOfAlbum_Adapte
     public class ViewHolder extends RecyclerView.ViewHolder {
         LinearLayout like_layout;
         TextView tvsongname, tvsongsinger, tvindex;
-        ImageView imghinh, imgrank;
+        ImageView imghinh, imgrank, header;
+        TextView category,tvTitleSongList ;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -80,6 +83,9 @@ public class SongOfAlbum_Adapter extends RecyclerView.Adapter<SongOfAlbum_Adapte
             like_layout = itemView.findViewById(R.id.like_layout);
             like_layout.setVisibility(View.GONE);
             imgrank.setVisibility(View.GONE);
+            header = itemView.findViewById(R.id.header);
+            category = itemView.findViewById(R.id.category);
+            tvTitleSongList = itemView.findViewById(R.id.tvTitleSongList);
         }
     }
 
