@@ -82,14 +82,8 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
         slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
-        SharedPreferences sharedPreferences = PreferenceManager
-                .getDefaultSharedPreferences(this);
-        String name = sharedPreferences.getString(IDACCOUNT,"123");
-        getUser(name);
-//        getUser("Ni1MnruS64T8kOffmNyHa8ixxWw1");
+        getUser();
         checkDarkMode();
-        Log.d("main","oncreate") ;
-
 
     }
 
@@ -142,7 +136,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // check user
-    private void getUser(final String userID) {
+    private void getUser() {
+        final String userID ;
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        userInfor.setID(sharedPreferences.getString(IDACCOUNT,"123"));
+        userID  = userInfor.getID() ;
         final UserDAO userDAO = new UserDAO(getApplicationContext());
         userDAO.getUser(userID, new UserCallBack() {
             @Override

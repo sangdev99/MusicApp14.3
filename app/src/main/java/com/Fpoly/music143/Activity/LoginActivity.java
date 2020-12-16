@@ -131,8 +131,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 //    Save data
     private void saveData(String userID) {
-        UserInfor userInfor = UserInfor.getInstance();
-        userInfor.setID(mAuth.getCurrentUser().getUid());
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -202,6 +200,8 @@ public class LoginActivity extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             updateUI();
+        } else {
+            saveData("default");
         }
     }
 
