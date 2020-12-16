@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -84,7 +85,7 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
                 userInfor.setisFavorites(false);
                 userInfor.setTempPlayListID(playlist.get(position).getID());
                     //chuyển tới fragment songlist
-                    ChangeFragment(new SongsListFragment());
+                    ChangeFragment(playlist.get(position),new SongsListFragment());
             }
         });
 
@@ -202,7 +203,11 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
 
 
 
-    private void ChangeFragment(Fragment fragment){
+    private void ChangeFragment(PlayList playlist,Fragment fragment){
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("PlayList", playlist);
+        bundle.putInt("fragment",1);
+        fragment.setArguments(bundle);
         FragmentManager fragmentManager = playlistFragment.getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.setCustomAnimations(R.anim.slide_out_left,R.anim.slide_in_right);

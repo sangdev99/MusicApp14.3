@@ -8,33 +8,15 @@ import com.google.gson.annotations.SerializedName;
 
 public class Song implements Parcelable {
 
-    @SerializedName("Image")
-    @Expose
+
     private String Image;
-    @SerializedName("Link")
-    @Expose
     private String Link;
-    @SerializedName("Singer")
-    @Expose
     private String Singer;
-    @SerializedName("Type")
-    @Expose
     private String Type;
-    @SerializedName("ID")
-    @Expose
     private String ID;
-    @SerializedName("Name")
-    @Expose
     private String Name;
-    @SerializedName("Like")
-    @Expose
     private Integer Like;
 
-
-    /**
-     * No args constructor for use in serialization
-     *
-     */
     public Song() {
     }
 
@@ -47,41 +29,8 @@ public class Song implements Parcelable {
         Name = name;
         Like = like;
     }
-    /*
- @param image
- @param singer
- @param like
- @param link
- @param name
- @param iD
- @param type
-*/
 
-    protected Song(Parcel in) {
-        Image = in.readString();
-        Link = in.readString();
-        Singer = in.readString();
-        Type = in.readString();
-        ID = in.readString();
-        Name = in.readString();
-        if (in.readByte() == 0) {
-            Like = null;
-        } else {
-            Like = in.readInt();
-        }
-    }
 
-    public static final Creator<Song> CREATOR = new Creator<Song>() {
-        @Override
-        public Song createFromParcel(Parcel in) {
-            return new Song(in);
-        }
-
-        @Override
-        public Song[] newArray(int size) {
-            return new Song[size];
-        }
-    };
 
     public String getImage() {
         return Image;
@@ -142,6 +91,32 @@ public class Song implements Parcelable {
     public static Creator<Song> getCREATOR() {
         return CREATOR;
     }
+
+    protected Song(Parcel in) {
+        Image = in.readString();
+        Link = in.readString();
+        Singer = in.readString();
+        Type = in.readString();
+        ID = in.readString();
+        Name = in.readString();
+        if (in.readByte() == 0) {
+            Like = null;
+        } else {
+            Like = in.readInt();
+        }
+    }
+
+    public static final Creator<Song> CREATOR = new Creator<Song>() {
+        @Override
+        public Song createFromParcel(Parcel in) {
+            return new Song(in);
+        }
+
+        @Override
+        public Song[] newArray(int size) {
+            return new Song[size];
+        }
+    };
 
     @Override
     public int describeContents() {

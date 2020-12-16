@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.Fpoly.music143.Activity.MainActivity;
+import com.Fpoly.music143.Activity.SquareImageView;
 import com.Fpoly.music143.Database.DAO.SongsDAO;
 import com.Fpoly.music143.Fragment.Account.AccountFragment;
 import com.Fpoly.music143.Fragment.Music.PlayMusicFragment;
@@ -30,12 +32,15 @@ import com.Fpoly.music143.Fragment.SongsList.Adapter.SongOfAlbum_Adapter;
 import com.Fpoly.music143.Fragment.SongsList.Adapter.SongOfFavorite_Adapter;
 import com.Fpoly.music143.Fragment.SongsList.Adapter.SongOfPlaylist_Adapter;
 import com.Fpoly.music143.Fragment.UserPlayList.PlaylistFragment;
+import com.Fpoly.music143.Model.Album;
+import com.Fpoly.music143.Model.PlayList;
 import com.Fpoly.music143.Model.Song;
 import com.Fpoly.music143.Model.UserInfor;
 import com.Fpoly.music143.R;
 
 import com.Fpoly.music143.Model.SongIDList;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -45,15 +50,25 @@ public class SongsListFragment extends Fragment {
     RecyclerView recyclerView;
     Boolean isPlayList;
     Boolean isFavorites;
+
+
+    TextView tvCategory,tvTitleSongList ;
+    SquareImageView imgHeader ;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
       View view = inflater.inflate(R.layout.fragment_songslist,container,false);
       recyclerView = view.findViewById(R.id.rcvsonglist);
-//      UserInfor UserInfor = UserInfor.getInstance();
       UserInfor userInfor = UserInfor.getInstance();
       isPlayList =  userInfor.getisPlayList();
       isFavorites = userInfor.getisFavorites();
+
+        tvCategory = view.findViewById(R.id.tvCategory);
+        tvTitleSongList = view.findViewById(R.id.tvTitleSongList);
+        imgHeader = view.findViewById(R.id.imgHeader);
+
+
       Toolbar toolbar = view.findViewById(R.id.toolbar);
       toolbar.setNavigationIcon(R.drawable.ic_keyboard_arrow_left_black_24dp);
       toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -61,12 +76,12 @@ public class SongsListFragment extends Fragment {
             public void onClick(View view) {
                 if(isPlayList){
                     if(isFavorites){
-                        changeFragment(view ,new AccountFragment(),true);
+                        changeFragment(new AccountFragment(),true);
                     }else{
-                        changeFragment(view, new PlaylistFragment(),true);
+                        changeFragment( new PlaylistFragment(),true);
                     }
                 }else{
-                        changeFragment(view,new HomeFragment(),true);
+                        changeFragment(new HomeFragment(),true);
 //                    }
                 }
             }
@@ -76,7 +91,7 @@ public class SongsListFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               changeFragment( view,new PlayMusicFragment(),false);
+               changeFragment( new PlayMusicFragment(),false);
             }
         });
        /*Lấy danh sách mã bài hát yêu thích từ các fragment
@@ -85,8 +100,10 @@ public class SongsListFragment extends Fragment {
         if(isPlayList){
            list = isFavorites ? userInfor.getFavorites() : userInfor.getUserPlaylist();
         }else{
-            //nếu không phải playlist thì xét tiếp có phải từ album hay không, nếu có lấy từ album, ngược lại lấy từ favorites của global class
             list = userInfor.getCurrentAlbum();
+            //nếu không phải playlist thì xét tiếp có phải từ album hay không, nếu có lấy từ album, ngược lại lấy từ favorites của global class
+
+
         }
         // check list
         try {
@@ -114,21 +131,34 @@ public class SongsListFragment extends Fragment {
                     if (isFavorites) {
                         SongOfFavorite_Adapter p_adapter = new SongOfFavorite_Adapter(getContext(), Songs, SongsListFragment.this);
                         recyclerView.setAdapter(p_adapter);
+                        tvCategory.setText("Bài hát yêu thích");
+                        tvTitleSongList.setText("");
+                        Picasso.get().load(Songs.get(Songs.size() - 1).getImage()).into(imgHeader);
                     } else {
                         //Nếu từ adapter gọi đến thì sử dụng adapter danh sách ID playlist để có thể xóa được bài hát trong playlist
                         SongOfPlaylist_Adapter p_adapter = new SongOfPlaylist_Adapter(getContext(), Songs, SongsListFragment.this);
                         recyclerView.setAdapter(p_adapter);
+                        Bundle bundle = getArguments();
+                        PlayList playList = bundle.getParcelable("PlayList");
+                        tvCategory.setText("PlayList");
+                        tvTitleSongList.setText(playList.getName());
+                        Picasso.get().load(Songs.get(Songs.size() - 1).getImage()).into(imgHeader);
                     }
                 }else{
                     SongOfAlbum_Adapter adapter = new SongOfAlbum_Adapter(getContext(),Songs,SongsListFragment.this);
                     recyclerView.setAdapter(adapter);
+                    Bundle bundle = getArguments();
+                    Album album = bundle.getParcelable("Album");
+                    tvCategory.setText("Album");
+                    tvTitleSongList.setText(album.getName());
+                    Picasso.get().load(album.getImage()).into(imgHeader);
                 }
                 dialog.dismiss();
             }
         });
     }
 
-    private void changeFragment(View view,Fragment fragment, Boolean isback){
+    private void changeFragment(Fragment fragment, Boolean isback){
         FragmentTransaction ftm = this.getFragmentManager().beginTransaction();
         Bundle bundle = new Bundle();
         //Kiểm tra fragment sẽ đi qua fragment playmusic hay về lại fragment trước đó
@@ -136,7 +166,6 @@ public class SongsListFragment extends Fragment {
             bundle.putParcelableArrayList("MultipleSongs",Songs);
             bundle.putInt("fragment",1);
             fragment.setArguments(bundle);
-//            AppCompatActivity activity = (AppCompatActivity) view.getContext();
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).addToBackStack(null).commit();
         }else{
             bundle.putBoolean("AddMusic",false);
@@ -147,4 +176,5 @@ public class SongsListFragment extends Fragment {
         }
 
     }
+
 }

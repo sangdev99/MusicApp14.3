@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.Fpoly.music143.Activity.MainActivity;
 import com.Fpoly.music143.Fragment.Music.PlayMusicFragment;
 import com.Fpoly.music143.Fragment.SongsList.SongsListFragment;
+import com.Fpoly.music143.Interface.ItemClickListener;
 import com.Fpoly.music143.Model.Album;
 import com.Fpoly.music143.Model.Song;
 import com.Fpoly.music143.R;
@@ -30,7 +31,6 @@ import java.util.ArrayList;
 public class SongOfAlbum_Adapter extends RecyclerView.Adapter<SongOfAlbum_Adapter.ViewHolder> {
     Context context;
     ArrayList<Song> songArrayList;
-    ArrayList<Album> albumsArrayList;
     SongsListFragment songsListFragment;
 
     public SongOfAlbum_Adapter(Context context, ArrayList<Song> songArrayList, SongsListFragment songsListFragment) {
@@ -60,6 +60,12 @@ public class SongOfAlbum_Adapter extends RecyclerView.Adapter<SongOfAlbum_Adapte
             Picasso.get().load(song.getImage()).into(holder.imghinh);
         }
         holder.tvindex.setText(position + 1 + "");
+        holder.setItemClickListener(new ItemClickListener() {
+            @Override
+            public void onClick(View view, int position, boolean isLongClick) {
+                ChangeFragment(position, view);
+            }
+        });
     }
 
     @Override
@@ -67,13 +73,13 @@ public class SongOfAlbum_Adapter extends RecyclerView.Adapter<SongOfAlbum_Adapte
         return songArrayList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder  implements View.OnClickListener {
         LinearLayout like_layout;
         TextView tvsongname, tvsongsinger, tvindex;
-        ImageView imghinh, imgrank, header;
-        TextView category,tvTitleSongList ;
+        ImageView imghinh, imgrank;
+        ItemClickListener itemClickListener;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView)  {
             super(itemView);
             tvsongname = itemView.findViewById(R.id.tvsongname);
             tvsongsinger = itemView.findViewById(R.id.tvsongsinger);
@@ -83,9 +89,15 @@ public class SongOfAlbum_Adapter extends RecyclerView.Adapter<SongOfAlbum_Adapte
             like_layout = itemView.findViewById(R.id.like_layout);
             like_layout.setVisibility(View.GONE);
             imgrank.setVisibility(View.GONE);
-            header = itemView.findViewById(R.id.header);
-            category = itemView.findViewById(R.id.category);
-            tvTitleSongList = itemView.findViewById(R.id.tvTitleSongList);
+            itemView.setOnClickListener(this);
+        }
+        public void setItemClickListener(ItemClickListener itemClickListener){
+            this.itemClickListener = itemClickListener;
+        }
+
+        @Override
+        public void onClick(View view) {
+            itemClickListener.onClick(view,getAdapterPosition(),false);
         }
     }
 

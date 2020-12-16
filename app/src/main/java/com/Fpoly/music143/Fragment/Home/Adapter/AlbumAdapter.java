@@ -1,6 +1,8 @@
 package com.Fpoly.music143.Fragment.Home.Adapter;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.Fpoly.music143.Fragment.Music.PlayMusicFragment;
 import com.Fpoly.music143.Interface.ItemClickListener;
 import com.Fpoly.music143.Fragment.SongsList.SongsListFragment;
 import com.Fpoly.music143.Fragment.Home.HomeFragment;
@@ -43,7 +46,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-         Album album = mangalbum.get(position);
+         final Album album = mangalbum.get(position);
          holder.txtcasialbum.setText(album.getName());
          holder.txttenalbum.setText(album.getSinger());
          Picasso.get().load(album.getImage()).into(holder.imghinhalbum);
@@ -56,7 +59,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder>{
                  userInfor.setCurrentAlbum(mangalbum.get(position).getSong());
                  userInfor.setisPlayList(false);
                  userInfor.setisFavorites(false);
-                 ChangeFragment(new SongsListFragment());
+                 ChangeFragment(mangalbum.get(position),new SongsListFragment());
              }
          });
     }
@@ -86,7 +89,11 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.ViewHolder>{
 
         }
     }
-    private void ChangeFragment(Fragment fragment){
+    private void ChangeFragment(Album album, Fragment fragment){
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("Album", album);
+        bundle.putInt("fragment",1);
+        fragment.setArguments(bundle);
         FragmentManager fragmentManager = homeFragment.getFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.setCustomAnimations(R.anim.slide_out_left,R.anim.slide_in_right);

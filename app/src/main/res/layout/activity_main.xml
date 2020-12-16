@@ -54,7 +54,6 @@
 
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
         android:id="@+id/nav_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -68,6 +67,5 @@
         app:itemTextAppearanceInactive="@style/BottomNavigationView" />
 
     <!--        app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"   -->
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

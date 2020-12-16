@@ -10,7 +10,7 @@
             android:layout_height="match_parent"
             >
 
-            <com.google.android.material.appbar.AppBarLayout
+                <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/appbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
 
                     <com.Fpoly.music143.Activity.SquareImageView
                         android:background="@drawable/vietnam"
-                        android:id="@+id/header"
+                        android:id="@+id/imgHeader"
                         android:layout_width="match_parent"
                         android:layout_height="400dp"
                         android:scaleType="centerCrop"
@@ -63,7 +63,7 @@
                         android:layout_height="wrap_content"
                         android:text="ALBUM"
                         android:textStyle="bold"
-                        android:id="@+id/category"
+                        android:id="@+id/tvCategory"
                         android:textColor="@color/primaryTitleColor"
                         android:textSize="14sp"/>
 
@@ -73,7 +73,7 @@
                         android:text="Sky Full Of Stars"
                         android:id="@+id/tvTitleSongList"
                         android:maxLines="2"
-                        android:layout_below="@+id/category"
+                        android:layout_below="@+id/tvCategory"
                         android:textColor="@color/primaryTitleColor"
                         android:textStyle="bold"
                         android:textSize="22sp"
@@ -85,7 +85,7 @@
                         android:textColor="@color/black"
                         android:layout_marginStart="16dp"
                         android:textSize="14sp"
-                        android:layout_toEndOf="@+id/category"
+                        android:layout_toEndOf="@+id/tvCategory"
                         android:id="@+id/listInfoTextView"/>
 
                     <ImageView
@@ -104,7 +104,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
-                        android:layout_below="@+id/title"
+                        android:layout_below="@+id/tvTitleSongList"
                         android:layout_marginTop="16dp"
                         android:weightSum="2">
 
@@ -117,11 +117,13 @@
             </com.google.android.material.appbar.AppBarLayout>
 
             <androidx.recyclerview.widget.RecyclerView
+                android:paddingBottom="48dp"
                 android:id="@+id/rcvsonglist"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clipToPadding="false"
-                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
+                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+                android:layout_marginBottom="20dp"/>
 
 
 
