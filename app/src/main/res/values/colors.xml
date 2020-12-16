@@ -6,12 +6,15 @@
     <color name="blue_black">#00ACC1</color>
     <color name="colorAccent">#00ACC1</color>
     <color name="primaryTitleColor">#000000</color>
+    <color name="gray_white">#9A9393</color>
     <color name="colorPrimaryNight">#00ACC1</color>
     <color name="bottom">#FFFFFF</color>
 
 
 
+    <color name="flatOrange">#FF9500</color>
     <color name="white">#FFF</color>
+    <color name="blue">#00ACC1</color>
     <color name="black">#000000</color>
     <color name="background">#d6d2c9</color>
     <color name="mautim">#a845de</color>

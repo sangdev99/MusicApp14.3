@@ -175,7 +175,7 @@ public class PlayMusicFragment extends Fragment implements ActionPlaying, Servic
             checkDuplicate(mangbaihat.get(CurrentPosition).getID());
             //Thay đổi màu trái tim tùy theo bài hát
             if(isFavorites){
-                imgbtnlike.setColorFilter(getResources().getColor(R.color.red),
+                imgbtnlike.setColorFilter(getResources().getColor(R.color.blue),
                         PorterDuff.Mode.SRC_ATOP);
             }else{
                 imgbtnlike.setColorFilter(getResources().getColor(R.color.primaryTitleColor),
@@ -381,7 +381,7 @@ public class PlayMusicFragment extends Fragment implements ActionPlaying, Servic
                 checkDuplicate(mangbaihat.get(position).getID());
                 //Đổi màu trái tim tùy theo bài hát
                 if(isFavorites){
-                    imgbtnlike.setColorFilter(getResources().getColor(R.color.red),
+                    imgbtnlike.setColorFilter(getResources().getColor(R.color.blue),
                             PorterDuff.Mode.SRC_ATOP);
                 }else{
                     imgbtnlike.setColorFilter(getResources().getColor(R.color.primaryTitleColor),
@@ -460,7 +460,7 @@ public class PlayMusicFragment extends Fragment implements ActionPlaying, Servic
                 checkDuplicate(mangbaihat.get(position).getID());
                 //Đổi màu trái tim tùy theo danh sách bài hát
                 if(isFavorites){
-                    imgbtnlike.setColorFilter(getResources().getColor(R.color.red),
+                    imgbtnlike.setColorFilter(getResources().getColor(R.color.blue),
                             PorterDuff.Mode.SRC_ATOP);
                 }else{
                     imgbtnlike.setColorFilter(getResources().getColor(R.color.primaryTitleColor),
@@ -650,7 +650,7 @@ public class PlayMusicFragment extends Fragment implements ActionPlaying, Servic
                     public void getCallBack(Boolean isSucees) {
                         if (isSucees) {
                             //Khi thành công đổi màu trái tim
-                            imgbtnlike.setColorFilter(getResources().getColor(R.color.red),
+                            imgbtnlike.setColorFilter(getResources().getColor(R.color.blue),
                                     PorterDuff.Mode.SRC_ATOP);
                             isFavorites = true;
                             //Sửa lại danh sách bài hát yêu thích của client

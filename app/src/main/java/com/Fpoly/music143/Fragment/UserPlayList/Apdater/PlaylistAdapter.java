@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 
 import com.Fpoly.music143.Database.DAO.PlayListDAO;
 import com.Fpoly.music143.Database.Services.CallBack.PlayListCallBack;
+import com.Fpoly.music143.Model.Song;
 import com.Fpoly.music143.Model.UserInfor;
 import com.Fpoly.music143.R;
 import com.Fpoly.music143.Fragment.UserPlayList.PlaylistFragment;
@@ -31,7 +33,8 @@ import java.util.ArrayList;
 
 public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHolder> {
     Context context;
-    ArrayList<PlayList> playlist;
+    ArrayList<PlayList> playlist ;
+    ArrayList<String> songArrayList = new ArrayList<>() ;
     PlaylistFragment playlistFragment;
     public PlaylistAdapter(Context context, ArrayList<PlayList> playlist,PlaylistFragment playlistFragment) {
         this.context = context;
@@ -49,6 +52,13 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
+        songArrayList = playlist.get(position).getSongs() ;
+        Log.d("testSongs", String.valueOf(playlist.get(position).getSongs())) ;
+        if (songArrayList == null) {
+            holder.count_song.setText("Bài hát: 0" );
+        }else {
+            holder.count_song.setText("Bài hát: " + String.valueOf(songArrayList.size()));
+        }
         holder.tvname.setText(playlist.get(position).getName());
         holder.btn_del.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,12 +98,13 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHo
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        TextView tvname;
+        TextView tvname,count_song;
         ImageView btn_rename,btn_del;
         private ItemClickListener itemClickListener;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvname = itemView.findViewById(R.id.tvplaylist_name);
+            count_song = itemView.findViewById(R.id.count_song);
             btn_del = itemView.findViewById(R.id.btn_del);
             btn_rename = itemView.findViewById(R.id.btn_rename);
             itemView.setOnClickListener(this);

@@ -14,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import com.Fpoly.music143.Interface.ItemClickListener;
 import com.Fpoly.music143.Database.DAO.PlayListDAO;
@@ -28,6 +30,7 @@ import java.util.ArrayList;
 public class AddItemPlayListAdapter extends RecyclerView.Adapter<AddItemPlayListAdapter.ViewHolder> {
     Context context;
     ArrayList<PlayList> playlist;
+    ArrayList<String> songArrayList = new ArrayList<>() ;
     PlaylistFragment playlistFragment;
     public AddItemPlayListAdapter(Context context, ArrayList<PlayList> playlist, PlaylistFragment playlistFragment) {
         this.context = context;
@@ -45,6 +48,14 @@ public class AddItemPlayListAdapter extends RecyclerView.Adapter<AddItemPlayList
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
+        songArrayList = playlist.get(position).getSongs() ;
+        Log.d("testSongs", String.valueOf(playlist.get(position).getSongs())) ;
+        if (songArrayList == null) {
+            holder.count_song.setText("Bài hát: 0" );
+        }else {
+            holder.count_song.setText("Bài hát: " + String.valueOf(songArrayList.size()));
+            songArrayList.clear();
+        }
         holder.tvname.setText(playlist.get(position).getName());
         holder.btn_del.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,7 +73,7 @@ public class AddItemPlayListAdapter extends RecyclerView.Adapter<AddItemPlayList
         holder.setItemClickListener(new ItemClickListener() {
             @Override
             public void onClick(View view, int position, boolean isLongClick) {
-               DoAddItemPlayList(playlist.get(position).getID());
+               DoAddItemPlayList( playlist.get(position).getID());
             }
         });
 
@@ -74,11 +85,12 @@ public class AddItemPlayListAdapter extends RecyclerView.Adapter<AddItemPlayList
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        TextView tvname;
+        TextView tvname,count_song;
         ImageView btn_rename,btn_del;
         private ItemClickListener itemClickListener;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            count_song = itemView.findViewById(R.id.count_song);
             tvname = itemView.findViewById(R.id.tvplaylist_name);
             btn_del = itemView.findViewById(R.id.btn_del);
             btn_rename = itemView.findViewById(R.id.btn_rename);
@@ -183,6 +195,9 @@ public class AddItemPlayListAdapter extends RecyclerView.Adapter<AddItemPlayList
         PlayListDAO playListDAO = new PlayListDAO(context);
         Log.e("chuyenPlaylist",userInfor.getID() + " " + PlayListID + " "+ userInfor.getTempID()) ;
         playListDAO.addItemPlayList(userInfor.getID(),PlayListID,userInfor.getTempID());
+     /*   Fragment fragment = new PlaylistFragment();
+        AppCompatActivity activity = (AppCompatActivity) view.getContext();
+        activity.getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).addToBackStack(null).commit();*/
     }
 
 }
