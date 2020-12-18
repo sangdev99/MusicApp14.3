@@ -35,7 +35,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.util.ArrayList;
 
-public class PlaylistFragment extends BottomSheetDialogFragment {
+public class PlaylistFragment extends Fragment {
     ArrayList<PlayList> myplayLists;
     RecyclerView rcvplaylist;
     ImageButton btn_createPlaylist;

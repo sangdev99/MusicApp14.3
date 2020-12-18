@@ -46,6 +46,7 @@ dependencies {
     implementation 'com.tbuonomo.andrui:viewpagerdotsindicator:4.1.2'
     // Round Image View
     implementation 'com.makeramen:roundedimageview:2.3.0'
+    implementation 'com.github.claucookie.miniequalizer:library:1.0.0'
 
 
 

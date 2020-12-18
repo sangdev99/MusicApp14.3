@@ -28,8 +28,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
 
+import com.Fpoly.music143.Fragment.Music.Adapter.PlaynhacAdapter;
 import com.Fpoly.music143.Fragment.UserPlayList.AddItemPlaylistFragment;
 import com.Fpoly.music143.Activity.MainActivity;
 import com.Fpoly.music143.Fragment.Music.Adapter.ViewPagerPlayListNhac;
@@ -62,7 +64,7 @@ import static com.Fpoly.music143.Fragment.Music.Notification.ApplicationClass.CH
 
 public class PlayMusicFragment extends BottomSheetDialogFragment implements ActionPlaying, ServiceConnection {
     public static ArrayList<Song> mangbaihat = new ArrayList<>();
-    public ViewPagerPlayListNhac adapternhac;
+    public static ViewPagerPlayListNhac adapternhac;
     TextView txttimesong,txttotaltimesong;
     SeekBar sktime;
     ImageButton imgbtnsuffle,imgbtnpre,imgbtnplay,imgbtnnext,imgbtnrepeat,imgbtnlike,imgbtnplaylist;
@@ -71,11 +73,11 @@ public class PlayMusicFragment extends BottomSheetDialogFragment implements Acti
     PlayMp3 playMp3 = new PlayMp3();
     Fragment_Dia_Nhac fragment_dia_nhac;
     Fragment_Play_Danh_Sach_Cac_Bai_Hat fragment_play_danh_sach_cac_bai_hat;
-    int fragment;
-    int CurrentPosition;
+//    int fragment;
+//    public static int position;
     UserInfor userInfor = UserInfor.getInstance();
     boolean stop = false  ;
-    int position = 0 ;
+    public static int position = 0 ;
     boolean repeat = false;
     boolean checkrandom = false;
     boolean next = false;
@@ -110,11 +112,7 @@ public class PlayMusicFragment extends BottomSheetDialogFragment implements Acti
     public void getDataFromIntent() {
         Log.d(TAG,"getDataFromIntent") ;
             Bundle bundle = getArguments();
-            //Nhận biết từ fragment nào gọi đến
-            fragment = (4);
-//            fragment = bundle.getInt("fragment");
             //Nhận dữ liệu từ các fragment truyền qua
-//            Song song = MusicService.song;
             Song song = bundle.getParcelable("Songs");
             if(song==null){
                 mangbaihat = bundle.getParcelableArrayList("MultipleSongs");
@@ -125,11 +123,6 @@ public class PlayMusicFragment extends BottomSheetDialogFragment implements Acti
     }
     //Hàm ánh xạ, và chơi nhạc ban đầu
     private void init(View root) {
-//        View bottomSheet = root.findViewById( R.id.bottom_sheet );
-//        mBottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
-
-
-
         dotsIndicator_music = root.findViewById(R.id.dotsIndicator_music) ;
         navBar = root.findViewById(R.id.nav_view);
         mediaSession = new MediaSessionCompat(getContext(),"PlayerAudio");
@@ -152,28 +145,32 @@ public class PlayMusicFragment extends BottomSheetDialogFragment implements Acti
         songs_artist_name = root.findViewById(R.id.songs_artist_name)  ;
         play_button = root.findViewById(R.id.play_button)  ;
 
-
+        //Đổ dữ liệu hình ảnh lên fragment đĩa nhạc và danh sách lên fragment playdanhsach
+        fragment_dia_nhac = new Fragment_Dia_Nhac();
+        fragment_play_danh_sach_cac_bai_hat = new Fragment_Play_Danh_Sach_Cac_Bai_Hat();
+        adapternhac = new ViewPagerPlayListNhac(getChildFragmentManager());
+        adapternhac.addFragment(fragment_dia_nhac);
+        adapternhac.addFragment(fragment_play_danh_sach_cac_bai_hat);
+        viewpagerplaynhac.setAdapter(adapternhac);
+        dotsIndicator_music.setViewPager(viewpagerplaynhac);
+        fragment_dia_nhac = (Fragment_Dia_Nhac) adapternhac.getItem(0);
 
         if(mangbaihat.size()>0){
             try {
                 Bundle bundle = getArguments();
-                if(bundle.getInt("CurrentPosition")!=0){
-                    CurrentPosition = bundle.getInt("CurrentPosition");
+                if(bundle.getInt("position")!=0){
+                    position = bundle.getInt("position");
                 }else{
-                    CurrentPosition = 0;
+                    position = 0;
                 }
             } catch (Exception e) {}
 
-            Picasso.get().load(mangbaihat.get(CurrentPosition).getImage()).into(songs_cover_one);
-            songs_title.setText(mangbaihat.get(CurrentPosition).getName());
-            songs_artist_name.setText(mangbaihat.get(CurrentPosition).getSinger());
-
-
-
-
+            Picasso.get().load(mangbaihat.get(position).getImage()).into(songs_cover_one);
+            songs_title.setText(mangbaihat.get(position).getName());
+            songs_artist_name.setText(mangbaihat.get(position).getSinger());
 
             //Kiểm tra có nằm trong danh sách bài hát yêu thích hay không
-            checkDuplicate(mangbaihat.get(CurrentPosition).getID());
+            checkDuplicate(mangbaihat.get(position).getID());
             //Thay đổi màu trái tim tùy theo bài hát
             if(isFavorites){
                 imgbtnlike.setColorFilter(getResources().getColor(R.color.blue),
@@ -187,36 +184,26 @@ public class PlayMusicFragment extends BottomSheetDialogFragment implements Acti
                 @Override
                 public void onClick(View v) {
                     if(isFavorites){
-                        ItemFavorites(mangbaihat.get(CurrentPosition).getID(),false);
+                        ItemFavorites(mangbaihat.get(position).getID(),false);
                     }else{
-                        ItemFavorites(mangbaihat.get(CurrentPosition).getID(),true);
+                        ItemFavorites(mangbaihat.get(position).getID(),true);
                     }
                 }
             });
             imgbtnplaylist.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    addPlayList(mangbaihat.get(CurrentPosition).getID());
+                    addPlayList(mangbaihat.get(position).getID());
                 }
             });
             //Chạy bài hát và đổi hình ảnh nút play
-            playMp3.execute(mangbaihat.get(CurrentPosition).getLink());
+            playMp3.execute(mangbaihat.get(position).getLink());
 //            musicService.playClicked(mangbaihat.get(0));
             imgbtnplay.setImageResource(R.drawable.ic_play);
             play_button.setImageResource(R.drawable.ic_baseline_play_arrow_24);
             showNotification(R.drawable.ic_pause_circle_filled_black_24dp);
         }
-        //Đổ dữ liệu hình ảnh lên fragment đĩa nhạc và danh sách lên fragment playdanhsach
-        fragment_dia_nhac = new Fragment_Dia_Nhac();
-        fragment_play_danh_sach_cac_bai_hat = new Fragment_Play_Danh_Sach_Cac_Bai_Hat();
-//        System.out.println(mangbaihat.get(CurrentPosition).getImage());
-//        fragment_dia_nhac.Playnhac(mangbaihat.get(CurrentPosition).getImage());
-        adapternhac = new ViewPagerPlayListNhac(getChildFragmentManager());
-        adapternhac.addFragment(fragment_dia_nhac);
-        adapternhac.addFragment(fragment_play_danh_sach_cac_bai_hat);
-        viewpagerplaynhac.setAdapter(adapternhac);
-        dotsIndicator_music.setViewPager(viewpagerplaynhac);
-        fragment_dia_nhac = (Fragment_Dia_Nhac) adapternhac.getItem(0);
+
     }
     //Hàm bắt các sự kiện nhấn của các nút
     private void eventClick() {
@@ -323,6 +310,7 @@ public class PlayMusicFragment extends BottomSheetDialogFragment implements Acti
         });
     }
 
+
 //    ================== 2 =====================
     //Hàm play bài hát
     @Override
@@ -355,6 +343,8 @@ public class PlayMusicFragment extends BottomSheetDialogFragment implements Acti
                 imgbtnplay.setImageResource(R.drawable.ic_pause_circle_filled_black_24dp);
                 play_button.setImageResource(R.drawable.ic_baseline_pause_24_white);
                 position++;
+                adapternhac.notifyDataSetChanged();
+                new PlaynhacAdapter(getActivity(), PlayMusicFragment.mangbaihat);
                 //nếu người dùng đang chọn chế dộ lặp lại
                 if (repeat == true){
                     if (position == 0 ){
@@ -374,7 +364,6 @@ public class PlayMusicFragment extends BottomSheetDialogFragment implements Acti
                     position = 0;
                 }
                 new PlayMp3().execute(mangbaihat.get(position).getLink());
-//                musicService.playClicked(mangbaihat.get(CurrentPosition));
                 fragment_dia_nhac.Playnhac(mangbaihat.get(position).getImage());
                 Picasso.get().load(mangbaihat.get(position).getImage()).into(songs_cover_one);
                 songs_title.setText(mangbaihat.get(position).getName());
@@ -430,12 +419,12 @@ public class PlayMusicFragment extends BottomSheetDialogFragment implements Acti
                 mediaPlayer.stop();
                 mediaPlayer.release();
                 mediaPlayer = null;
-
             }
             if (position < (mangbaihat.size())){
                 imgbtnplay.setImageResource(R.drawable.ic_pause_circle_filled_black_24dp);
                 imgbtnplay.setImageResource(R.drawable.ic_baseline_pause_24_white);
                 position--;
+                adapternhac.notifyDataSetChanged();
                 if (position <0){
                     position = mangbaihat.size() - 1;
                 }
@@ -453,7 +442,6 @@ public class PlayMusicFragment extends BottomSheetDialogFragment implements Acti
                     position = index;
                 }
                 new PlayMp3().execute(mangbaihat.get(position).getLink());
-//                musicService.playClicked(mangbaihat.get(CurrentPosition));
 
                 fragment_dia_nhac.Playnhac(mangbaihat.get(position).getImage());
                 Picasso.get().load(mangbaihat.get(position).getImage()).into(songs_cover_one);
@@ -533,7 +521,7 @@ public class PlayMusicFragment extends BottomSheetDialogFragment implements Acti
                             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                                 @Override
                                 public void onCompletion(MediaPlayer mp) {
-                                    next =true;
+                                    next = true;
                                     try{
                                         //tạm ngủ thread này 1s
                                         Thread.sleep(1000);
@@ -579,7 +567,6 @@ public class PlayMusicFragment extends BottomSheetDialogFragment implements Acti
                             position = 0;
                         }
                         new PlayMp3().execute(mangbaihat.get(position).getLink());
-//                        musicService.playClicked(mangbaihat.get(CurrentPosition));
 
                         fragment_dia_nhac.Playnhac(mangbaihat.get(position).getImage());
                         Picasso.get().load(mangbaihat.get(position).getImage()).into(songs_cover_one);
@@ -609,53 +596,9 @@ public class PlayMusicFragment extends BottomSheetDialogFragment implements Acti
 
 //    ================== 4 =====================
     //Hàm thêm vào danh sách playlist cá nhân
-    public void showBottomSheetDialogFragment() {
-
-}
-
     private void addPlayList(final String ID){
         userInfor.setTempID(ID);
         bottomSheetFragment.show(getFragmentManager(), bottomSheetFragment.getTag());
-
-
-
-
-
-
-
-
-       /* if(userInfor.getUsername()!=null){
-            Fragment fragment = new PlaylistFragment();
-            Log.d("chuyenPlaylist",mangbaihat.size() + "") ;
-            Log.d("chuyenPlaylist",position + "") ;
-            Bundle bundle = new Bundle();
-            bundle.putBoolean("AddMusic",true);
-            bundle.putParcelableArrayList("mangbaihatPlayList",mangbaihat);
-            bundle.putInt("Position",position);
-            fragment.setArguments(bundle);
-            userInfor.setTempID(ID);
-            // change Fragment Playlist
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.setCustomAnimations(R.anim.slide_out_left,R.anim.slide_in_right);
-            AppCompatActivity activity = (AppCompatActivity) view.getContext();
-            activity.getSupportFragmentManager().beginTransaction().replace(R.id.cointainmusic, fragment).commit();
-//            BottomSheetBehavior
-            mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-            mBottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) {
-
-            }
-
-            @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-                // React to dragging events
-            }
-            });
-
-        }else{
-            Toast.makeText(getContext(),"Bạn Cần Đăng Nhập Để Thực Hiện Chức Năng Này",Toast.LENGTH_SHORT).show();
-        }*/
     }
     //Hàm kiểm tra bài hát yêu thích
     private void checkDuplicate(String ID){

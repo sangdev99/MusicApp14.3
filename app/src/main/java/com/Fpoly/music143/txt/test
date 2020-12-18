@@ -1,3 +1,42 @@
+   /* if(userInfor.getUsername()!=null){
+             Fragment fragment = new PlaylistFragment();
+             Log.d("chuyenPlaylist",mangbaihat.size() + "") ;
+             Log.d("chuyenPlaylist",position + "") ;
+             Bundle bundle = new Bundle();
+             bundle.putBoolean("AddMusic",true);
+             bundle.putParcelableArrayList("mangbaihatPlayList",mangbaihat);
+             bundle.putInt("Position",position);
+             fragment.setArguments(bundle);
+             userInfor.setTempID(ID);
+             // change Fragment Playlist
+             FragmentTransaction ft = getFragmentManager().beginTransaction();
+             ft.setCustomAnimations(R.anim.slide_out_left,R.anim.slide_in_right);
+             AppCompatActivity activity = (AppCompatActivity) view.getContext();
+             activity.getSupportFragmentManager().beginTransaction().replace(R.id.cointainmusic, fragment).commit();
+ //            BottomSheetBehavior
+             mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+             mBottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+             @Override
+             public void onStateChanged(@NonNull View bottomSheet, int newState) {
+
+             }
+
+             @Override
+             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                 // React to dragging events
+             }
+             });
+
+         }else{
+             Toast.makeText(getContext(),"Bạn Cần Đăng Nhập Để Thực Hiện Chức Năng Này",Toast.LENGTH_SHORT).show();
+         }*/
+
+
+  public void showBottomSheetDialogFragment() {
+
+ }
+
+
   Picasso.get().load(mangbaihat.get(CurrentPosition).getImage()).into(songs_cover_one);
                 songs_title.setText(mangbaihat.get(CurrentPosition).getName());
                 songs_artist_name.setText(mangbaihat.get(CurrentPosition).getSinger());

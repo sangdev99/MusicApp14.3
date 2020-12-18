@@ -15,18 +15,24 @@ import com.Fpoly.music143.Fragment.Music.Adapter.PlaynhacAdapter;
 import com.Fpoly.music143.R;
 
 public class Fragment_Play_Danh_Sach_Cac_Bai_Hat extends Fragment {
-
     View view;
-    RecyclerView recyclerViewPlayNhac;
+
+    public static RecyclerView recyclerViewPlayNhac;
     PlaynhacAdapter playnhacAdapter;
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view =inflater.inflate(R.layout.fragment_play_danh_sach_cac_bai_hat,container,false);
+        view = inflater.inflate(R.layout.fragment_play_danh_sach_cac_bai_hat,container,false);
         recyclerViewPlayNhac = view.findViewById(R.id.recycleviewplaybaihat);
         if (PlayMusicFragment.mangbaihat.size()>0){
-            playnhacAdapter =new PlaynhacAdapter(getActivity(), PlayMusicFragment.mangbaihat);
+            playnhacAdapter = new PlaynhacAdapter(getActivity(), PlayMusicFragment.mangbaihat);
             recyclerViewPlayNhac.setLayoutManager(new LinearLayoutManager(getActivity()));
             recyclerViewPlayNhac.setAdapter(playnhacAdapter);
         }
