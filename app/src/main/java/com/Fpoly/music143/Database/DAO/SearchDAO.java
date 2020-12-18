@@ -56,13 +56,11 @@ public class SearchDAO {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot snapshot : task.getResult()) {
-                                Log.d("hehe", "123456");
                                 song = snapshot.toObject(Song.class) ;
                                 songArrayList.add(song) ;
                             }
                             songCallBack.getCallBack(songArrayList);
                         } else {
-                            Log.w("hehe", "Error getting documents.", task.getException());
                             ToastAnnotation("Có Lỗi Xảy Ra");
                         }
                     }
@@ -77,13 +75,11 @@ public class SearchDAO {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot snapshot : task.getResult()) {
-                                Log.d("hehe", "123456");
                                 song = snapshot.toObject(Song.class);
                                 songArrayList.add(song);
                             }
                             songCallBack.getCallBack(songArrayList);
                         } else {
-                            Log.w("hehe", "Error getting documents.", task.getException());
                             ToastAnnotation("Có Lỗi Xảy Ra");
                         }
                     }

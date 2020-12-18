@@ -14,13 +14,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.Fpoly.music143.Fragment.Music.PlayMusicFragment;
+import com.Fpoly.music143.Fragment.UserPlayList.AddItemPlaylistFragment;
 import com.Fpoly.music143.Interface.ItemClickListener;
 import com.Fpoly.music143.Database.DAO.PlayListDAO;
 import com.Fpoly.music143.Database.Services.CallBack.PlayListCallBack;
-import com.Fpoly.music143.Fragment.UserPlayList.PlaylistFragment;
 import com.Fpoly.music143.Model.PlayList;
 import com.Fpoly.music143.Model.UserInfor;
 import com.Fpoly.music143.R;
@@ -31,11 +31,11 @@ public class AddItemPlayListAdapter extends RecyclerView.Adapter<AddItemPlayList
     Context context;
     ArrayList<PlayList> playlist;
     ArrayList<String> songArrayList = new ArrayList<>() ;
-    PlaylistFragment playlistFragment;
-    public AddItemPlayListAdapter(Context context, ArrayList<PlayList> playlist, PlaylistFragment playlistFragment) {
+    AddItemPlaylistFragment addItemPlaylistFragment;
+    public AddItemPlayListAdapter(Context context, ArrayList<PlayList> playlist, AddItemPlaylistFragment addItemPlaylistFragment) {
         this.context = context;
         this.playlist = playlist;
-        this.playlistFragment = playlistFragment;
+        this.addItemPlaylistFragment = addItemPlaylistFragment;
     }
 
     @NonNull
@@ -195,9 +195,7 @@ public class AddItemPlayListAdapter extends RecyclerView.Adapter<AddItemPlayList
         PlayListDAO playListDAO = new PlayListDAO(context);
         Log.e("chuyenPlaylist",userInfor.getID() + " " + PlayListID + " "+ userInfor.getTempID()) ;
         playListDAO.addItemPlayList(userInfor.getID(),PlayListID,userInfor.getTempID());
-     /*   Fragment fragment = new PlaylistFragment();
-        AppCompatActivity activity = (AppCompatActivity) view.getContext();
-        activity.getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).addToBackStack(null).commit();*/
+        PlayMusicFragment.bottomSheetFragment.dismiss();
     }
 
 }

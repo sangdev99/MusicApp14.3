@@ -1,8 +1,15 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
     <androidx.viewpager.widget.ViewPager
         android:layout_above="@id/bottomm"
         android:layout_below="@id/toolbar_layout"
@@ -367,4 +374,27 @@
             app:layout_constraintTop_toTopOf="@+id/relativeLayout"
             app:layout_constraintVertical_bias="0.75" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-</RelativeLayout>
+    </RelativeLayout>
+
+
+ <!--   <LinearLayout
+
+        android:id="@+id/bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:behavior_peekHeight="400dp"
+        app:behavior_hideable="true"
+        android:layout_gravity="bottom"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+    <FrameLayout
+        android:id="@+id/cointainmusic"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/holo_orange_light">
+    </FrameLayout>
+    </LinearLayout>
+-->
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+

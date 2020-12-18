@@ -8,16 +8,13 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.os.StrictMode;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,15 +25,12 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
+import com.Fpoly.music143.Fragment.UserPlayList.AddItemPlaylistFragment;
 import com.Fpoly.music143.Activity.MainActivity;
 import com.Fpoly.music143.Fragment.Music.Adapter.ViewPagerPlayListNhac;
 import com.Fpoly.music143.Database.DAO.FavoritesDAO;
@@ -44,11 +38,13 @@ import com.Fpoly.music143.Database.Services.CallBack.SucessCallBack;
 import com.Fpoly.music143.Fragment.Music.Notification.ActionPlaying;
 import com.Fpoly.music143.Fragment.Music.Notification.MusicService;
 import com.Fpoly.music143.Fragment.Music.Notification.NotificationReceiver;
-import com.Fpoly.music143.Fragment.UserPlayList.PlaylistFragment;
 import com.Fpoly.music143.Model.Song;
 import com.Fpoly.music143.Model.UserInfor;
 import com.Fpoly.music143.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.squareup.picasso.Picasso;
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
@@ -64,7 +60,7 @@ import static com.Fpoly.music143.Fragment.Music.Notification.ApplicationClass.AC
 import static com.Fpoly.music143.Fragment.Music.Notification.ApplicationClass.ACTION_PREV;
 import static com.Fpoly.music143.Fragment.Music.Notification.ApplicationClass.CHANNEL_ID_2;
 
-public class PlayMusicFragment extends Fragment implements ActionPlaying, ServiceConnection {
+public class PlayMusicFragment extends BottomSheetDialogFragment implements ActionPlaying, ServiceConnection {
     public static ArrayList<Song> mangbaihat = new ArrayList<>();
     public ViewPagerPlayListNhac adapternhac;
     TextView txttimesong,txttotaltimesong;
@@ -91,11 +87,11 @@ public class PlayMusicFragment extends Fragment implements ActionPlaying, Servic
     ImageView songs_cover_one ;
     TextView songs_title,songs_artist_name ;
     ImageButton play_button ;
-
-
-
-
     private String TAG = "Lifecycle" ;
+    public static  AddItemPlaylistFragment bottomSheetFragment = new AddItemPlaylistFragment();
+
+
+
 
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -129,6 +125,11 @@ public class PlayMusicFragment extends Fragment implements ActionPlaying, Servic
     }
     //Hàm ánh xạ, và chơi nhạc ban đầu
     private void init(View root) {
+//        View bottomSheet = root.findViewById( R.id.bottom_sheet );
+//        mBottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+
+
+
         dotsIndicator_music = root.findViewById(R.id.dotsIndicator_music) ;
         navBar = root.findViewById(R.id.nav_view);
         mediaSession = new MediaSessionCompat(getContext(),"PlayerAudio");
@@ -195,7 +196,7 @@ public class PlayMusicFragment extends Fragment implements ActionPlaying, Servic
             imgbtnplaylist.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    addPlayList(v,mangbaihat.get(CurrentPosition).getID(),0);
+                    addPlayList(mangbaihat.get(CurrentPosition).getID());
                 }
             });
             //Chạy bài hát và đổi hình ảnh nút play
@@ -402,7 +403,7 @@ public class PlayMusicFragment extends Fragment implements ActionPlaying, Servic
                 imgbtnplaylist.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        addPlayList(v, mangbaihat.get(0).getID(),position);
+                        addPlayList(mangbaihat.get(0).getID());
                     }
                 });
                 showNotification(R.drawable.ic_pause_circle_filled_black_24dp);
@@ -482,7 +483,7 @@ public class PlayMusicFragment extends Fragment implements ActionPlaying, Servic
                 imgbtnplaylist.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        addPlayList(v,mangbaihat.get(0).getID(),position);
+                        addPlayList(mangbaihat.get(0).getID());
                     }
                 });
                 showNotification(R.drawable.ic_pause_circle_filled_black_24dp);
@@ -608,9 +609,22 @@ public class PlayMusicFragment extends Fragment implements ActionPlaying, Servic
 
 //    ================== 4 =====================
     //Hàm thêm vào danh sách playlist cá nhân
-    private void addPlayList(View view, String ID,int position){
-        if(userInfor.getUsername()!=null){
-//            mediaPlayer.stop();
+    public void showBottomSheetDialogFragment() {
+
+}
+
+    private void addPlayList(final String ID){
+        userInfor.setTempID(ID);
+        bottomSheetFragment.show(getFragmentManager(), bottomSheetFragment.getTag());
+
+
+
+
+
+
+
+
+       /* if(userInfor.getUsername()!=null){
             Fragment fragment = new PlaylistFragment();
             Log.d("chuyenPlaylist",mangbaihat.size() + "") ;
             Log.d("chuyenPlaylist",position + "") ;
@@ -624,10 +638,24 @@ public class PlayMusicFragment extends Fragment implements ActionPlaying, Servic
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.setCustomAnimations(R.anim.slide_out_left,R.anim.slide_in_right);
             AppCompatActivity activity = (AppCompatActivity) view.getContext();
-            activity.getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
+            activity.getSupportFragmentManager().beginTransaction().replace(R.id.cointainmusic, fragment).commit();
+//            BottomSheetBehavior
+            mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            mBottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                // React to dragging events
+            }
+            });
+
         }else{
             Toast.makeText(getContext(),"Bạn Cần Đăng Nhập Để Thực Hiện Chức Năng Này",Toast.LENGTH_SHORT).show();
-        }
+        }*/
     }
     //Hàm kiểm tra bài hát yêu thích
     private void checkDuplicate(String ID){

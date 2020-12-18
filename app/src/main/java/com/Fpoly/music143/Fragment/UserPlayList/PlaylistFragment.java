@@ -31,16 +31,16 @@ import com.Fpoly.music143.Model.UserInfor;
 import com.Fpoly.music143.R;
 import com.Fpoly.music143.Fragment.UserPlayList.Apdater.PlaylistAdapter;
 import com.Fpoly.music143.Model.PlayList;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.util.ArrayList;
 
-public class PlaylistFragment extends Fragment {
+public class PlaylistFragment extends BottomSheetDialogFragment {
     ArrayList<PlayList> myplayLists;
     RecyclerView rcvplaylist;
     ImageButton btn_createPlaylist;
     PlaylistAdapter adapter;
     AddItemPlayListAdapter add_adapter;
-    Boolean addMusic;
     private ArrayList<Song> mangbaihatPlaylist = new ArrayList<>();
     PlayMusicFragment playMusicFragment = new PlayMusicFragment() ;
     Toolbar toolbar ;
@@ -72,22 +72,7 @@ public class PlaylistFragment extends Fragment {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Xác định nếu đang thao tác thêm bài hát vào playlist
-                if(addMusic){
-                    Bundle bundle1 = new Bundle();
-                    if(mangbaihatPlaylist.size()>1){
-                        bundle1.putParcelableArrayList("MultipleSongs",mangbaihatPlaylist);
-                        bundle1.putInt("CurrentPosition",position);
-                    }else{
-                        bundle1.putParcelable("Songs",mangbaihatPlaylist.get(0));
-                    }
-                    Fragment fragment = new PlayMusicFragment();
-                    fragment.setArguments(bundle1);
-                    changeFragment(view, fragment,true);
-                }else {
-                    changeFragment(view, new AccountFragment(),false);
-                }
-
+                changeFragment(new AccountFragment());
             }
         });
     }
@@ -131,18 +116,13 @@ public class PlaylistFragment extends Fragment {
             public void getCallBack(ArrayList<PlayList> playLists) {
                 myplayLists.clear();
                 myplayLists.addAll(playLists);
-                if(addMusic){
-                    add_adapter.notifyDataSetChanged();
-                }else{
-                    adapter.notifyDataSetChanged();
-                }
+                adapter.notifyDataSetChanged();
             }
         });
     }
 
     private void getData(String UID) {
         final Bundle bundle = getArguments();
-        addMusic = bundle.getBoolean("AddMusic");
         final Dialog dialog = new Dialog(getContext());
         dialog.setContentView(R.layout.loading);
         dialog.show();
@@ -154,36 +134,18 @@ public class PlaylistFragment extends Fragment {
                 Log.d("MyPlaylist",playlist.toString()) ;
                 rcvplaylist.setLayoutManager(new LinearLayoutManager(getActivity()));
                 Log.d("playlistTest", playlist.toString());
-                if(addMusic){
-                    mangbaihatPlaylist = bundle.getParcelableArrayList("mangbaihatPlayList");
-                    position = bundle.getInt("Position");
-                    Log.d("chuyenPlaylist",mangbaihatPlaylist.size() + "") ;
-                    Log.d("chuyenPlaylist",position + "") ;
-                    add_adapter = new AddItemPlayListAdapter(getContext(),myplayLists,PlaylistFragment.this);
-                    rcvplaylist.setAdapter(add_adapter);
-                }else{
-                    adapter = new PlaylistAdapter(getContext(),myplayLists,PlaylistFragment.this);
-                    rcvplaylist.setAdapter(adapter);
-                }
+                adapter = new PlaylistAdapter(getContext(),myplayLists,PlaylistFragment.this);
+                rcvplaylist.setAdapter(adapter);
                 dialog.dismiss();
             }
         });
     }
 
-    private void changeFragment(View view , Fragment fragment, boolean isback){
+    private void changeFragment(Fragment fragment){
         FragmentTransaction fragmentTransaction =this.getFragmentManager().beginTransaction();
-        if(isback){
-            fragmentTransaction.setCustomAnimations(R.anim.slide_out_left, R.anim.slide_in_right);
-            AppCompatActivity activity = (AppCompatActivity) view.getContext();
-            activity.getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).addToBackStack(null).commit();
-        }else {
-            fragmentTransaction.setCustomAnimations(R.anim.slide_in_left,R.anim.slide_out_right);
-            fragmentTransaction.replace(R.id.nav_host_fragment,fragment);
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
-        }
-
-
+        fragmentTransaction.setCustomAnimations(R.anim.slide_in_left,R.anim.slide_out_right);
+        fragmentTransaction.replace(R.id.nav_host_fragment,fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
-
 }
