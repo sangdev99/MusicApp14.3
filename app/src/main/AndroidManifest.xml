@@ -61,9 +61,6 @@
         <service
             android:name=".Fragment.Music.Notification.MusicService"
             android:enabled="true" />
-        <service
-            android:name=".Fragment.Music.BackgroundSoundService"
-            android:enabled="true" />
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

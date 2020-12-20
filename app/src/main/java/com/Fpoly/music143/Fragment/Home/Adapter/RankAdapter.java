@@ -14,14 +14,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.Fpoly.music143.Activity.MainActivity;
-import com.Fpoly.music143.Fragment.Music.BackgroundSoundService;
-import com.Fpoly.music143.Fragment.Music.Notification.MusicService;
 import com.Fpoly.music143.Fragment.Music.PlayMusicFragment;
 import com.Fpoly.music143.Interface.ItemClickListener;
 import com.Fpoly.music143.Fragment.Home.HomeFragment;

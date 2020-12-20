@@ -145,7 +145,7 @@ public class AccountFragment extends Fragment {
         });
     }
 
-    // Dark Mode
+    // DarkMode
     private void saveNightModeState(boolean nightMode) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(KEY_ISNIGHTMODE, nightMode);
@@ -168,6 +168,7 @@ public class AccountFragment extends Fragment {
 
     }
 
+    // check user
     private void GetUser() {
         UserInfor userInfor = UserInfor.getInstance();
                 if(userInfor.getUsername()!=null){
@@ -177,6 +178,7 @@ public class AccountFragment extends Fragment {
                     swface.setChecked(userInfor.getLinkFaceBook()?true:false);
                     swgmail.setChecked(userInfor.getLinkGmail()?true:false);
                 }else{
+                    btnSignOut.setText("Đăng Nhập");
                     Toast.makeText(getContext(),"Bạn Chưa Có Tài Khoản hệ Thống, Vui Lòng Đăng Ký",Toast.LENGTH_SHORT).show();
                     Favorites.setEnabled(false);
                     Playlist.setEnabled(false);
@@ -198,32 +200,5 @@ public class AccountFragment extends Fragment {
     public void onResume() {
         super.onResume();
         GetUser();
-    }
-
-    // Connect Fb GG
-    private void Unlink() {
-        Intent intent =new Intent(getContext(), GoogleAccount.class);
-        intent.putExtra("getToken",true);
-        intent.putExtra("Link",false);
-        startActivity(intent);
-    }
-    private void CreateLink(boolean isMail) {
-        if(isMail){
-            Intent intent =new Intent(getContext(), GoogleAccount.class);
-            intent.putExtra("getToken",true);
-            intent.putExtra("Link",true);
-            startActivity(intent);
-        }else{
-            Intent intent =new Intent(getContext(), FacebookAccount.class);
-            intent.putExtra("getToken",true);
-            startActivity(intent);
-        }
-    }
-    private void check(){
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
-        for(int i = 0; i<mAuth.getCurrentUser().getProviderData().size();i++){
-            System.out.println(user.getProviderData().get(i).getProviderId());
-        }
     }
 }

@@ -1,3 +1,8 @@
+     imgbtnlike.setImageResource(R.drawable.ic_favorite_black_24dp);
+     imgbtnlike.setImageResource(R.drawable.ic_baseline_favorite_border_24);
+
+
+
    /* if(userInfor.getUsername()!=null){
              Fragment fragment = new PlaylistFragment();
              Log.d("chuyenPlaylist",mangbaihat.size() + "") ;

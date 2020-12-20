@@ -73,10 +73,8 @@ public class PlayMusicFragment extends BottomSheetDialogFragment implements Acti
     PlayMp3 playMp3 = new PlayMp3();
     Fragment_Dia_Nhac fragment_dia_nhac;
     Fragment_Play_Danh_Sach_Cac_Bai_Hat fragment_play_danh_sach_cac_bai_hat;
-//    int fragment;
-//    public static int position;
     UserInfor userInfor = UserInfor.getInstance();
-    boolean stop = false  ;
+    public boolean stop = false  ;
     public static int position = 0 ;
     boolean repeat = false;
     boolean checkrandom = false;
@@ -91,9 +89,6 @@ public class PlayMusicFragment extends BottomSheetDialogFragment implements Acti
     ImageButton play_button ;
     private String TAG = "Lifecycle" ;
     public static  AddItemPlaylistFragment bottomSheetFragment = new AddItemPlaylistFragment();
-
-
-
 
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -173,11 +168,9 @@ public class PlayMusicFragment extends BottomSheetDialogFragment implements Acti
             checkDuplicate(mangbaihat.get(position).getID());
             //Thay đổi màu trái tim tùy theo bài hát
             if(isFavorites){
-                imgbtnlike.setColorFilter(getResources().getColor(R.color.blue),
-                        PorterDuff.Mode.SRC_ATOP);
+                imgbtnlike.setImageResource(R.drawable.ic_favorite_black_24dp);
             }else{
-                imgbtnlike.setColorFilter(getResources().getColor(R.color.primaryTitleColor),
-                        PorterDuff.Mode.SRC_ATOP);
+                imgbtnlike.setImageResource(R.drawable.ic_baseline_favorite_border_24);
             }
             //Khi nhấn vào nút yêu thích(trái tim)
             imgbtnlike.setOnClickListener(new View.OnClickListener() {
@@ -197,8 +190,8 @@ public class PlayMusicFragment extends BottomSheetDialogFragment implements Acti
                 }
             });
             //Chạy bài hát và đổi hình ảnh nút play
+
             playMp3.execute(mangbaihat.get(position).getLink());
-//            musicService.playClicked(mangbaihat.get(0));
             imgbtnplay.setImageResource(R.drawable.ic_play);
             play_button.setImageResource(R.drawable.ic_baseline_play_arrow_24);
             showNotification(R.drawable.ic_pause_circle_filled_black_24dp);
@@ -221,6 +214,7 @@ public class PlayMusicFragment extends BottomSheetDialogFragment implements Acti
                 }
             }
         },500);
+
 
         //Nút Chơi Nhạc
         imgbtnplay.setOnClickListener(new View.OnClickListener() {
@@ -315,12 +309,16 @@ public class PlayMusicFragment extends BottomSheetDialogFragment implements Acti
     //Hàm play bài hát
     @Override
     public void playClicked() {
+
         if(mediaPlayer.isPlaying()){
+//            stop = true ;
             mediaPlayer.pause();
+
             imgbtnplay.setImageResource(R.drawable.ic_play);
             play_button.setImageResource(R.drawable.ic_baseline_play_arrow_24);
             showNotification(R.drawable.ic_play);
         }else{
+//            stop = false ;
             mediaPlayer.start();
             play_button.setImageResource(R.drawable.ic_baseline_pause_24_white);
             imgbtnplay.setImageResource(R.drawable.ic_pause_circle_filled_black_24dp);
@@ -344,7 +342,6 @@ public class PlayMusicFragment extends BottomSheetDialogFragment implements Acti
                 play_button.setImageResource(R.drawable.ic_baseline_pause_24_white);
                 position++;
                 adapternhac.notifyDataSetChanged();
-                new PlaynhacAdapter(getActivity(), PlayMusicFragment.mangbaihat);
                 //nếu người dùng đang chọn chế dộ lặp lại
                 if (repeat == true){
                     if (position == 0 ){
@@ -372,11 +369,9 @@ public class PlayMusicFragment extends BottomSheetDialogFragment implements Acti
                 checkDuplicate(mangbaihat.get(position).getID());
                 //Đổi màu trái tim tùy theo bài hát
                 if(isFavorites){
-                    imgbtnlike.setColorFilter(getResources().getColor(R.color.blue),
-                            PorterDuff.Mode.SRC_ATOP);
+                    imgbtnlike.setImageResource(R.drawable.ic_favorite_black_24dp);
                 }else{
-                    imgbtnlike.setColorFilter(getResources().getColor(R.color.primaryTitleColor),
-                            PorterDuff.Mode.SRC_ATOP);
+                    imgbtnlike.setImageResource(R.drawable.ic_baseline_favorite_border_24);
                 }
                 //Khi nhấn vào nút yêu thích(trái tim)
                 imgbtnlike.setOnClickListener(new View.OnClickListener() {
@@ -451,11 +446,9 @@ public class PlayMusicFragment extends BottomSheetDialogFragment implements Acti
                 checkDuplicate(mangbaihat.get(position).getID());
                 //Đổi màu trái tim tùy theo danh sách bài hát
                 if(isFavorites){
-                    imgbtnlike.setColorFilter(getResources().getColor(R.color.blue),
-                            PorterDuff.Mode.SRC_ATOP);
+                    imgbtnlike.setImageResource(R.drawable.ic_favorite_black_24dp);
                 }else{
-                    imgbtnlike.setColorFilter(getResources().getColor(R.color.primaryTitleColor),
-                            PorterDuff.Mode.SRC_ATOP);
+                    imgbtnlike.setImageResource(R.drawable.ic_baseline_favorite_border_24);
                 }
                 //Khi nhấn vào nút yêu thích(Trái tim)
                 imgbtnlike.setOnClickListener(new View.OnClickListener() {
@@ -624,8 +617,7 @@ public class PlayMusicFragment extends BottomSheetDialogFragment implements Acti
                     public void getCallBack(Boolean isSucees) {
                         if (isSucees) {
                             //Khi thành công đổi màu trái tim
-                            imgbtnlike.setColorFilter(getResources().getColor(R.color.blue),
-                                    PorterDuff.Mode.SRC_ATOP);
+                            imgbtnlike.setImageResource(R.drawable.ic_favorite_black_24dp);
                             isFavorites = true;
                             //Sửa lại danh sách bài hát yêu thích của client
                             UserInfor userInfor = UserInfor.getInstance();
@@ -644,8 +636,7 @@ public class PlayMusicFragment extends BottomSheetDialogFragment implements Acti
                     @Override
                     public void getCallBack(Boolean isSucees) {
                         if (isSucees) {
-                            imgbtnlike.setColorFilter(getResources().getColor(R.color.primaryTitleColor),
-                                    PorterDuff.Mode.SRC_ATOP);
+                            imgbtnlike.setImageResource(R.drawable.ic_baseline_favorite_border_24);
                             isFavorites = false;
                             UserInfor userInfor = UserInfor.getInstance();
                             try{

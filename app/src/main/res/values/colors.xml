@@ -6,7 +6,7 @@
     <color name="blue_black">#00ACC1</color>
     <color name="colorAccent">#00ACC1</color>
     <color name="primaryTitleColor">#000000</color>
-    <color name="gray_white">#202020</color>
+    <color name="gray_white">@color/text_color_dark</color>
     <color name="colorPrimaryNight">#00ACC1</color>
     <color name="bottom">#FFFFFF</color>
 

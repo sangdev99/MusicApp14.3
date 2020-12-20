@@ -62,7 +62,6 @@ public class PlaynhacAdapter extends RecyclerView.Adapter<PlaynhacAdapter.ViewHo
                 ChangeFragment(vitri,view) ;
             }
         });
-
     }
 
     @Override

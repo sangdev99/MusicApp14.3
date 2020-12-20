@@ -1,71 +1,33 @@
 package com.Fpoly.music143.Activity;
 
-import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
-import android.media.MediaPlayer;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.preference.PreferenceManager;
-import android.support.v4.media.session.MediaSessionCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewPropertyAnimator;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.ImageButton;
-import android.widget.SeekBar;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.Fpoly.music143.Database.DAO.UserDAO;
 import com.Fpoly.music143.Database.Services.CallBack.UserCallBack;
-import com.Fpoly.music143.Fragment.Account.AccountFragment;
-import com.Fpoly.music143.Fragment.Home.HomeFragment;
-import com.Fpoly.music143.Fragment.Music.Adapter.ViewPagerPlayListNhac;
-import com.Fpoly.music143.Fragment.Music.BackgroundSoundService;
-import com.Fpoly.music143.Fragment.Music.Fragment_Dia_Nhac;
-import com.Fpoly.music143.Fragment.Music.Fragment_Play_Danh_Sach_Cac_Bai_Hat;
-import com.Fpoly.music143.Fragment.Music.Notification.MusicService;
-import com.Fpoly.music143.Fragment.Music.PlayMusicFragment;
-import com.Fpoly.music143.Model.Song;
 import com.Fpoly.music143.Model.UserInfor;
 import com.Fpoly.music143.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.api.LogDescriptor;
-import com.sothree.slidinguppanel.ScrollableViewHelper;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
-import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.widget.NestedScrollView;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import androidx.viewpager.widget.ViewPager;
 
 import java.util.ArrayList;
 
 import static com.Fpoly.music143.Activity.LoginActivity.IDACCOUNT;
 import static com.Fpoly.music143.Fragment.Account.AccountFragment.KEY_ISNIGHTMODE;
 import static com.Fpoly.music143.Fragment.Account.AccountFragment.MyPREFERENCES;
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class MainActivity extends AppCompatActivity {
     public static SlidingUpPanelLayout slidingUpPanelLayout;
@@ -86,12 +48,10 @@ public class MainActivity extends AppCompatActivity {
         checkDarkMode();
 
     }
-
-
    // slidingUpPanelLayout
     public static void slidingUpPanelLayout() {
         // COLLAPSED: xup do
-        slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+        slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
         slidingUpPanelLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
             @Override
             public void onPanelSlide(View panel, float slideOffset) {
@@ -153,8 +113,6 @@ public class MainActivity extends AppCompatActivity {
                     userInfor.setFavorites(userInfors.get(0).getFavorites());
                     userInfor.setLinkFaceBook(userInfors.get(0).getLinkFaceBook());
                     userInfor.setLinkGmail(userInfors.get(0).getLinkGmail());
-                }else{
-                    Toast.makeText(getApplicationContext(),"Bạn Chưa Có Tài Khoản hệ Thống, Vui Lòng Đăng Ký",Toast.LENGTH_SHORT).show();
                 }
             }
 

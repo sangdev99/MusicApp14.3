@@ -29,10 +29,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
-
-<!--            <include layout="@layout/activity_main2"/>-->
+            android:layout_height="match_parent">
 
             <FrameLayout
             app:layout_constraintLeft_toLeftOf="parent"
@@ -41,14 +38,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:id="@+id/container"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            />
-            <!-- <fragment
-                 android:layout_width="match_parent"
-                 android:layout_height="match_parent"
-                 android:id="@+id/playmusic"
-                 android:name="com.Fpoly.music143.Fragment.Music.PlayMusicFragment"
-                 tools:layout="@layout/activity_play_music" />-->
+            android:layout_height="0dp"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.sothree.slidinguppanel.SlidingUpPanelLayout>
@@ -66,7 +56,5 @@
         app:itemTextColor="@drawable/bottom_nav_icon_selector"
         app:itemTextAppearanceActive="@style/BottomNavigationView"
         app:itemTextAppearanceInactive="@style/BottomNavigationView" />
-
-    <!--        app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"   -->
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

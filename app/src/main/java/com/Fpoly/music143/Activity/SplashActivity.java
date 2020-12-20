@@ -18,14 +18,13 @@ import com.Fpoly.music143.R;
 public class SplashActivity extends AppCompatActivity {
 
     private static int SPLASH_TIME_OUT = 4000;
-    ImageView img,logoApp;
+    ImageView logoApp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        img = findViewById(R.id.img1);
         logoApp = findViewById(R.id.logoApp) ;
-        makeAnimation(img, R.anim.anim_test);
+
         fadeIn();
 
         new Handler().postDelayed(new Runnable() {
@@ -39,10 +38,6 @@ public class SplashActivity extends AppCompatActivity {
 
     }
 
-    private void makeAnimation(View view, int animID){
-        Animation animation = AnimationUtils.loadAnimation(this, animID);
-        view.startAnimation(animation);
-    }
 
     private void fadeIn() {
         Animation fadeIn = new AlphaAnimation(0, 1);

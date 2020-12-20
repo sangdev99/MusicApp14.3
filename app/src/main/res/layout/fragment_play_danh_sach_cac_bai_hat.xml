@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    android:background="@color/white_black">
+    android:background="@color/white_black"
+    android:paddingBottom="50dp">>
     <androidx.recyclerview.widget.RecyclerView
         android:paddingBottom="50dp"
         android:id="@+id/recycleviewplaybaihat"

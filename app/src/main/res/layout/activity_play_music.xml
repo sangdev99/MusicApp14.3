@@ -202,9 +202,8 @@
                 android:layout_height="match_parent">
 
                 <ImageButton
-                    android:src="@drawable/ic_favorite_black_24dp"
+                    android:src="@drawable/ic_baseline_favorite_border_24"
                     android:background="@color/white_black"
-                    android:tint="@color/black"
                     android:id="@+id/imgbtnlike"
                     android:layout_width="55dp"
                     android:layout_height="55dp"

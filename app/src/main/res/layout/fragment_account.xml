@@ -231,7 +231,6 @@
         android:id="@+id/btnSignOut"
         android:textStyle="bold"
         android:textSize="24dp"
-
         android:padding="10dp"
         android:background="@drawable/shape"
         android:textColor="@color/colorPrimaryDark"
