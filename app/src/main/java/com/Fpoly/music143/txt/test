@@ -1,3 +1,24 @@
+   @Override
+    public void onResume() {
+        super.onResume();
+        GetUser();
+    }
+
+
+
+
+    // LyfeCycle
+    @Override
+    protected void onStart() {
+        Log.d("main","onStart") ;
+        super.onStart();
+    }
+    @Override
+    protected void onDestroy() {
+        Log.d("main","finish") ;
+        super.onDestroy();
+    }
+
      imgbtnlike.setImageResource(R.drawable.ic_favorite_black_24dp);
      imgbtnlike.setImageResource(R.drawable.ic_baseline_favorite_border_24);
 

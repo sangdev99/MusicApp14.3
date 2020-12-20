@@ -93,7 +93,7 @@ public class GoogleAccount extends AppCompatActivity {
                                                 Log.d("devH", String.valueOf(task.isSuccessful()));
                                                 if (task.isSuccessful()) {
                                                     if(task.getResult().getDocuments().size() == 0){
-                                                        userInfor = new UserInfor(mAuth.getCurrentUser().getUid(),name,null,"",email,false,false) ;
+                                                        userInfor = new UserInfor(mAuth.getCurrentUser().getUid(),name,null,"",email,true,false) ;
                                                         userInfor.setID(mAuth.getCurrentUser().getUid());
                                                         Log.d("devH", userInfor.getID());
                                                         db.collection("Users").document(mAuth.getCurrentUser().getUid()).set(userInfor);

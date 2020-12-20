@@ -43,7 +43,6 @@ public class AccountFragment extends Fragment {
     UserInfor userInfor = UserInfor.getInstance();
     LinearLayout Favorites;
     LinearLayout Playlist;
-    LinearLayout EditAccount;
     SwitchCompat swface, swgmail;
     SwitchCompat swdarkmode  ;
     Button btnSignOut ;
@@ -56,15 +55,13 @@ public class AccountFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_account, container, false);
 
-
-        //==========================================================================================
         init(root) ;
         GetUser();
-//        check() ;
         onClick() ;
 
         return root;
     }
+
     private void init(View root) {
         tvUsername = root.findViewById(R.id.tvUserName);
         tvUserEmail = root.findViewById(R.id.tvUserEmail);
@@ -73,7 +70,6 @@ public class AccountFragment extends Fragment {
         swdarkmode = root.findViewById(R.id.swDarkMode);
         Favorites = root.findViewById(R.id.Favorites);
         Playlist = root.findViewById(R.id.PlayList);
-        EditAccount = root.findViewById(R.id.Edit_Account);
         btnSignOut = root.findViewById(R.id.btnSignOut);
     }
 
@@ -98,23 +94,7 @@ public class AccountFragment extends Fragment {
                 changeFragment(fragment);
             }
         });
-        swgmail.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(swgmail.isChecked()){
-//                  CreateLink(true);
-                }
-            }
-        });
 
-        swface.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(swface.isChecked()){
-//                   CreateLink(false);
-                }
-            }
-        });
         //DarkMode
         sharedPreferences = this.getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         checkNightModeActivated();
@@ -145,12 +125,14 @@ public class AccountFragment extends Fragment {
         });
     }
 
-    // DarkMode
+    // Lưu darkMode
     private void saveNightModeState(boolean nightMode) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(KEY_ISNIGHTMODE, nightMode);
         editor.apply();
     }
+
+    // Check darkmode
     public void checkNightModeActivated(){
         if(sharedPreferences.getBoolean(KEY_ISNIGHTMODE, true)){
             swdarkmode.setChecked(true);
@@ -159,6 +141,7 @@ public class AccountFragment extends Fragment {
         }
     }
 
+    // Thay đổi Fragment
     private void changeFragment(Fragment fragment){
         FragmentTransaction fragmentTransaction =this.getFragmentManager().beginTransaction();
         fragmentTransaction.setCustomAnimations(R.anim.slide_out_left,R.anim.slide_in_right);
@@ -168,26 +151,27 @@ public class AccountFragment extends Fragment {
 
     }
 
-    // check user
+    // Check user
     private void GetUser() {
         UserInfor userInfor = UserInfor.getInstance();
                 if(userInfor.getUsername()!=null){
                     tvUsername.setText(userInfor.getUsername());
                     tvUserEmail.setText(userInfor.getEmail());
-                    list = (ArrayList)userInfor.getFavorites();
+                    list = userInfor.getFavorites();
                     swface.setChecked(userInfor.getLinkFaceBook()?true:false);
                     swgmail.setChecked(userInfor.getLinkGmail()?true:false);
+                    swface.setClickable(false);
+                    swgmail.setClickable(false);
                 }else{
                     btnSignOut.setText("Đăng Nhập");
-                    Toast.makeText(getContext(),"Bạn Chưa Có Tài Khoản hệ Thống, Vui Lòng Đăng Ký",Toast.LENGTH_SHORT).show();
                     Favorites.setEnabled(false);
                     Playlist.setEnabled(false);
-                    EditAccount.setEnabled(false);
-                    swgmail.setEnabled(false);
-                    swface.setEnabled(false);
+                    swgmail.setEnabled(userInfor.getLinkFaceBook()?true:false);
+                    swface.setEnabled(userInfor.getLinkGmail()?true:false);
                 }
             }
 
+    // Đăng xuất
     private void SignOut() {
         FirebaseAuth.getInstance().signOut();
         Intent intent = new Intent(getContext(), LoginActivity.class);
@@ -196,9 +180,4 @@ public class AccountFragment extends Fragment {
         getActivity().overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        GetUser();
-    }
 }

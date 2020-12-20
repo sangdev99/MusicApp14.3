@@ -22,11 +22,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
@@ -47,6 +49,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.squareup.picasso.Picasso;
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
@@ -88,6 +91,7 @@ public class PlayMusicFragment extends BottomSheetDialogFragment implements Acti
     TextView songs_title,songs_artist_name ;
     ImageButton play_button ;
     private String TAG = "Lifecycle" ;
+
     public static  AddItemPlaylistFragment bottomSheetFragment = new AddItemPlaylistFragment();
 
 
@@ -98,6 +102,15 @@ public class PlayMusicFragment extends BottomSheetDialogFragment implements Acti
         getDataFromIntent();
         init(root);
         eventClick();
+        RelativeLayout notclick = root.findViewById(R.id.notClick);
+        notclick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MainActivity.slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+
+            }
+        });
+
 
         return root;
 

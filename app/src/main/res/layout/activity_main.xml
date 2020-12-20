@@ -17,7 +17,8 @@
         app:umanoShadowHeight="5dp">
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:id="@+id/maincontain">
             <fragment
                 android:id="@+id/nav_host_fragment"
                 android:name="androidx.navigation.fragment.NavHostFragment"
@@ -28,6 +29,7 @@
         </RelativeLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/mlayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 

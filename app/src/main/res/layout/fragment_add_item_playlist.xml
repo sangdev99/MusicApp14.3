@@ -63,7 +63,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         tools:listitem="@layout/item_playlist"
-        android:layout_height="match_parent"
+        android:layout_height="500dp"
         android:id="@+id/rcvplaylist">
     </androidx.recyclerview.widget.RecyclerView>
 

@@ -127,7 +127,7 @@ public class FacebookAccount extends AppCompatActivity {
                             Log.d("devH", String.valueOf(task.isSuccessful()));
                             if (task.isSuccessful()) {
                                 if(task.getResult().getDocuments().size() == 0){
-                                    userInfor = new UserInfor(user.getUid(),user.getDisplayName(),null,"",user.getEmail(),false,false) ;
+                                    userInfor = new UserInfor(user.getUid(),user.getDisplayName(),null,"",user.getEmail(),false,true) ;
                                     userInfor.setID(mAuth.getCurrentUser().getUid());
                                     Log.d("devH", userInfor.getID());
                                     db.collection("Users").document(mAuth.getCurrentUser().getUid()).set(userInfor);

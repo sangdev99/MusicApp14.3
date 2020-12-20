@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewPropertyAnimator;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.RelativeLayout;
 
 import com.Fpoly.music143.Database.DAO.UserDAO;
 import com.Fpoly.music143.Database.Services.CallBack.UserCallBack;
@@ -19,6 +20,7 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
@@ -48,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         checkDarkMode();
 
     }
+
    // slidingUpPanelLayout
     public static void slidingUpPanelLayout() {
         // COLLAPSED: xup do
@@ -75,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
                 .start();
     }
 
+    // check Darkmode
     private void checkDarkMode() {
         sharedPreferences = this.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         if(sharedPreferences.getBoolean(KEY_ISNIGHTMODE, true)){
@@ -87,11 +91,12 @@ public class MainActivity extends AppCompatActivity {
     // onBackPressed
     @Override
     public void onBackPressed() {
+        super.onBackPressed();
         if (slidingUpPanelLayout != null &&
                 (slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {
             slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
         } else {
-            super.onBackPressed();
+           finish();
         }
     }
 
@@ -118,20 +123,6 @@ public class MainActivity extends AppCompatActivity {
 
         });
     }
-
-    @Override
-    protected void onStart() {
-        Log.d("main","onStart") ;
-        super.onStart();
-    }
-
-    @Override
-    protected void onDestroy() {
-        Log.d("main","finish") ;
-        super.onDestroy();
-    }
-
-
 
 }
 
