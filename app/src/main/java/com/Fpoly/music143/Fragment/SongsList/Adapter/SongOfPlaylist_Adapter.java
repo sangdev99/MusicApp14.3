@@ -78,7 +78,6 @@ public class SongOfPlaylist_Adapter extends RecyclerView.Adapter<SongOfPlaylist_
         });
     }
 
-
     @Override
     public int getItemCount() {
         return songArrayList.size();
@@ -130,6 +129,7 @@ public class SongOfPlaylist_Adapter extends RecyclerView.Adapter<SongOfPlaylist_
         activity.getSupportFragmentManager().beginTransaction().replace(R.id.container, myFragment).addToBackStack(null).commit();
     }
 
+    // Xóa playlist
     private void DoDelete(final int position){
         final UserInfor userInfor = UserInfor.getInstance();
         final Song song = songArrayList.get(position);

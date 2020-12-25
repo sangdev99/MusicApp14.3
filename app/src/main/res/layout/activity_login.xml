@@ -70,7 +70,7 @@
             android:foreground="?android:attr/selectableItemBackground"
             android:text="ĐĂNG NHẬP"
             android:textAllCaps="false"
-            android:textColor="#FE5295"
+            android:textColor="@color/blue"
             android:textSize="17sp"/>
         <TextView
             android:id="@+id/tvForgetpass"
@@ -82,7 +82,7 @@
             android:padding="10dp"
             android:text="Quên Mật Khẩu ?"
             android:textAllCaps="true"
-            android:textColor="#FAD0E1"
+            android:textColor="@color/blue"
             android:textSize="13dp"
             android:textStyle="bold" />
 
@@ -116,7 +116,7 @@
             android:padding="10dp"
             android:text="Chưa có tài khoàn ? Đăng ký tại đây"
             android:textAllCaps="true"
-            android:textColor="#FAD0E1"
+            android:textColor="@color/blue"
             android:textSize="13dp"
             android:textStyle="bold" />
 

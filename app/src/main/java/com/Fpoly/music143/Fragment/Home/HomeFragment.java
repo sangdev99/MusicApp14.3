@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
@@ -114,6 +115,7 @@ public class HomeFragment extends Fragment {
                 albumInRank = album;
                 albumAdapter = new AlbumAdapter(getContext(), albumInRank, HomeFragment.this);
                 rcvalbum.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+                rcvalbum.setHasFixedSize(true);
                 rcvalbum.setAdapter(albumAdapter);
             }
         });

@@ -35,7 +35,6 @@ public class LoginActivity extends AppCompatActivity {
     public static final String IDACCOUNT = "IDACCOUNT";
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

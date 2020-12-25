@@ -85,7 +85,7 @@ public class RegistrationActivity extends AppCompatActivity {
                                                 userInfor.setID(ID);
                                                 Toast.makeText(RegistrationActivity.this, "Đăng Ký Thành Công", Toast.LENGTH_SHORT).show();
                                                 Log.e("login_error","Đăng Ký Thành Công");
-                                                startActivity(new Intent(RegistrationActivity.this, MainActivity.class));
+                                                startActivity(new Intent(RegistrationActivity.this, LoginActivity.class));
                                                 overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
                                                 finish();
                                             }else{

@@ -40,18 +40,13 @@ public class PlaylistFragment extends Fragment {
     RecyclerView rcvplaylist;
     ImageButton btn_createPlaylist;
     PlaylistAdapter adapter;
-    AddItemPlayListAdapter add_adapter;
-    private ArrayList<Song> mangbaihatPlaylist = new ArrayList<>();
-    PlayMusicFragment playMusicFragment = new PlayMusicFragment() ;
     Toolbar toolbar ;
-    int position;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_playlist, container, false);
         rcvplaylist = root.findViewById(R.id.rcvplaylist);
         btn_createPlaylist = root.findViewById(R.id.btn_createPlaylist);
 
-//        UserInfor UserInfor = UserInfor.getInstance();
         UserInfor userInfor = UserInfor.getInstance();
         getData(userInfor.getID());
 
@@ -77,6 +72,28 @@ public class PlaylistFragment extends Fragment {
         });
     }
 
+    // get Data
+    private void getData(String UID) {
+        final Bundle bundle = getArguments();
+        final Dialog dialog = new Dialog(getContext());
+        dialog.setContentView(R.layout.loading);
+        dialog.show();
+        PlayListDAO playListDAO = new PlayListDAO(getContext());
+        playListDAO.getPlayList(UID, new PlayListCallBack() {
+            @Override
+            public void getCallBack(ArrayList<PlayList> playlist) {
+                myplayLists = playlist;
+                Log.d("MyPlaylist",playlist.toString()) ;
+                rcvplaylist.setLayoutManager(new LinearLayoutManager(getActivity()));
+                Log.d("playlistTest", playlist.toString());
+                adapter = new PlaylistAdapter(getContext(),myplayLists,PlaylistFragment.this);
+                rcvplaylist.setAdapter(adapter);
+                dialog.dismiss();
+            }
+        });
+    }
+
+    // tạo dialog
     private void showDialog() {
         androidx.appcompat.app.AlertDialog.Builder builder= new androidx.appcompat.app.AlertDialog.Builder(getContext());
         LinearLayout linearLayout = new LinearLayout(getContext());
@@ -108,6 +125,7 @@ public class PlaylistFragment extends Fragment {
 
     }
 
+    // Tạo mới
     private void CreateNew(String name) {
         UserInfor userInfor = UserInfor.getInstance();
         PlayListDAO playListDAO = new PlayListDAO(getContext());
@@ -121,25 +139,6 @@ public class PlaylistFragment extends Fragment {
         });
     }
 
-    private void getData(String UID) {
-        final Bundle bundle = getArguments();
-        final Dialog dialog = new Dialog(getContext());
-        dialog.setContentView(R.layout.loading);
-        dialog.show();
-        PlayListDAO playListDAO = new PlayListDAO(getContext());
-        playListDAO.getPlayList(UID, new PlayListCallBack() {
-            @Override
-            public void getCallBack(ArrayList<PlayList> playlist) {
-                myplayLists = playlist;
-                Log.d("MyPlaylist",playlist.toString()) ;
-                rcvplaylist.setLayoutManager(new LinearLayoutManager(getActivity()));
-                Log.d("playlistTest", playlist.toString());
-                adapter = new PlaylistAdapter(getContext(),myplayLists,PlaylistFragment.this);
-                rcvplaylist.setAdapter(adapter);
-                dialog.dismiss();
-            }
-        });
-    }
 
     private void changeFragment(Fragment fragment){
         FragmentTransaction fragmentTransaction =this.getFragmentManager().beginTransaction();

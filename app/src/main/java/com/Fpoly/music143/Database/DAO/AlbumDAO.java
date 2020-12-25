@@ -28,7 +28,7 @@ public class AlbumDAO {
     public void getAlbum(final AlbumCallBack albumCallBack) {
         // Access a Cloud Firestore instance from your Activity
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("Album").limit(3).get()
+        db.collection("Album").limit(4).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {

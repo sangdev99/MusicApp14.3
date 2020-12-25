@@ -38,7 +38,6 @@ public class SplashActivity extends AppCompatActivity {
 
     }
 
-
     private void fadeIn() {
         Animation fadeIn = new AlphaAnimation(0, 1);
         fadeIn.setInterpolator(new DecelerateInterpolator()); //add this

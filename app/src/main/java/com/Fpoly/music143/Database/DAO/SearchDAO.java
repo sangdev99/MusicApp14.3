@@ -69,7 +69,8 @@ public class SearchDAO {
 
     public void getNextMusicByKind( String kindID,String musicID,final SongCallBack songCallBack) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("Songs").orderBy("ID", Query.Direction.ASCENDING).whereEqualTo("Type", kindID).startAfter(musicID).limit(7).get()
+        db.collection("Songs").orderBy("ID", Query.Direction.ASCENDING)
+                .whereEqualTo("Type", kindID).startAfter(musicID).limit(7).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {

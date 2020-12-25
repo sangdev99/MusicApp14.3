@@ -110,6 +110,7 @@ public class SearchFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+    // Tìm kiếm theo tên bài hát
     private void SearchMusic(String query) {
     final Dialog dialog = new Dialog(getContext());
         dialog.setContentView(R.layout.loading);
@@ -134,6 +135,8 @@ public class SearchFragment extends Fragment {
             }
         });
     }
+
+    // Kiểm tra dữ liệu nhập vào
     private String UpperCase(String input){
         StringBuffer output=new StringBuffer(input);
         for(int i=0;i<output.length();i++)

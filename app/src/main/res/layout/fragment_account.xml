@@ -113,7 +113,7 @@
             android:layout_height="wrap_content"
             android:textSize="24dp"
             android:textStyle="bold"
-            android:text="Quản lý Đăng Nhập"
+            android:text="Trạng Thái Đăng Nhập"
             android:padding="5dp"/>
         <LinearLayout
             android:layout_width="match_parent"

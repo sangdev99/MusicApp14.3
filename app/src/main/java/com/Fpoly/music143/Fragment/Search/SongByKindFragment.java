@@ -92,6 +92,7 @@ public class SongByKindFragment extends Fragment {
         return root;
     }
 
+    // Load thêm bài hát khi người dùng kéo xuống
     private void loadMore(String kindID){
         progressBar.setVisibility(View.VISIBLE);
         SearchDAO searchDAO = new SearchDAO(getContext());
@@ -107,6 +108,7 @@ public class SongByKindFragment extends Fragment {
         });
     }
 
+    // Get dữ liệu theo kindID tương ứng
     private void getData(final String kindID) {
         final Dialog dialog = new Dialog(getContext());
         dialog.setContentView(R.layout.loading);

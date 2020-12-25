@@ -26,10 +26,7 @@ public class MusicService extends Service   {
     public static final String ACTION_NEXT = "NEXT";
     public static final String ACTION_PREV = "PREVIOUS";
     public static final String ACTION_PLAY = "PLAY";
-    public static final String ACTION_PAUSE = "PAUSE";
-    public static final String ACTION_GETDATA = "ACTION_GETDATA";
     ActionPlaying actionPlaying;
-    public static Boolean isPlaying  = false ;
     public static Song song   ;
     private IBinder mBinder = new MyBinder() ;
 
@@ -56,19 +53,6 @@ public class MusicService extends Service   {
         }
         if (actionName != null){
             switch (actionName){
-/*                case ACTION_GETDATA:
-                    if (intent !=null && intent.getExtras()!=null) {
-                        song = intent.getParcelableExtra("Songs");
-                        Log.d("song.getLink", song.getLink());
-                        if (actionPlaying != null){
-                            Bundle bundle = intent.getExtras() ;
-                            bundle.putParcelable("Songs",song);
-                            bundle.putInt("fragment",4);
-                            getApplicationContext().startService(intent) ;
-                            actionPlaying.getDataFromIntent();
-                        }
-                    }
-                    break;*/
                 case ACTION_PLAY:
                     if (actionPlaying != null){
                         actionPlaying.playClicked();

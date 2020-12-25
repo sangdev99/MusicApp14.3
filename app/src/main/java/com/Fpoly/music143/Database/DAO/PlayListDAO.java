@@ -96,7 +96,7 @@ public class PlayListDAO {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d("MyPlaylist", "DocumentSnapshot successfully updated!");
-                        ToastAnnotation("Thêm Playlist thành công");
+                        ToastAnnotation("Đổi tên Playlist thành công");
                         danhsachPlaylist.clear();
                         playListCallBack.getCallBack(danhsachPlaylist);
                         getPlayList(UserID,playListCallBack);
@@ -117,12 +117,12 @@ public class PlayListDAO {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference documentReference = db.collection("Users").document(UserID) ;
         documentReference
-                .collection("MyPlaylist").document(PlayListID).update("deleted",true)
+                .collection("MyPlaylist").document(PlayListID).delete()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d("MyPlaylist", "DocumentSnapshot successfully updated!");
-                        ToastAnnotation("Thêm Playlist thành công");
+                        ToastAnnotation("Xóa Playlist thành công");
                         danhsachPlaylist.clear();
                         playListCallBack.getCallBack(danhsachPlaylist);
                         getPlayList(UserID,playListCallBack);

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -125,7 +126,7 @@ public class AccountFragment extends Fragment {
         });
     }
 
-    // Lưu darkMode
+    // Save darkMode
     private void saveNightModeState(boolean nightMode) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(KEY_ISNIGHTMODE, nightMode);
@@ -146,7 +147,7 @@ public class AccountFragment extends Fragment {
         FragmentTransaction fragmentTransaction =this.getFragmentManager().beginTransaction();
         fragmentTransaction.setCustomAnimations(R.anim.slide_out_left,R.anim.slide_in_right);
         fragmentTransaction.replace(R.id.nav_host_fragment,fragment);
-//        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
 
     }
@@ -166,8 +167,8 @@ public class AccountFragment extends Fragment {
                     btnSignOut.setText("Đăng Nhập");
                     Favorites.setEnabled(false);
                     Playlist.setEnabled(false);
-                    swgmail.setEnabled(userInfor.getLinkFaceBook()?true:false);
-                    swface.setEnabled(userInfor.getLinkGmail()?true:false);
+                    swface.setEnabled(false);
+                    swgmail.setEnabled(false);
                 }
             }
 

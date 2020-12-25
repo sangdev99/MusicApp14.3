@@ -33,7 +33,7 @@ public class SongsDAO {
     public void getSuggest(final SongCallBack songCallBack) {
         // Access a Cloud Firestore instance from your Activity
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("Songs").get()
+       db.collection("Songs").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -67,7 +67,7 @@ public class SongsDAO {
     public void getRankSongs(final SongCallBack songCallBack) {
         // Access a Cloud Firestore instance from your Activity
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("Songs").orderBy("Like",  Query.Direction.DESCENDING).limit(5).get()
+       db.collection("Songs").orderBy("Like",  Query.Direction.DESCENDING).limit(5).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -90,7 +90,7 @@ public class SongsDAO {
             Log.d("songIDList", songIDList.getData().toString());
             for (int i=0; i < songIDList.getData().size(); i++) {
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
-                db.collection("Songs").whereEqualTo("ID",songIDList.getData().get(i)).get()
+               db.collection("Songs").whereEqualTo("ID",songIDList.getData().get(i)).get()
                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -114,7 +114,7 @@ public class SongsDAO {
     public void getNewSongs(final SongCallBack songCallBack) {
         // Access a Cloud Firestore instance from your Activity
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("Songs").orderBy("ID",  Query.Direction.DESCENDING).limit(5).get()
+       db.collection("Songs").orderBy("ID",  Query.Direction.DESCENDING).limit(5).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {

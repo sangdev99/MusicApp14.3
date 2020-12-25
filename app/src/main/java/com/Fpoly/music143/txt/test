@@ -1,3 +1,22 @@
+         /*    //Khi nhấn vào nút yêu thích(trái tim)
+                   imgbtnlike.setOnClickListener(new View.OnClickListener() {
+                       @Override
+                       public void onClick(View v) {
+                           if(isFavorites){
+                               ItemFavorites(mangbaihat.get(position).getID(),false);
+                           }else{
+                               ItemFavorites(mangbaihat.get(position).getID(),true);
+                           }
+                       }
+                   });
+                   imgbtnplaylist.setOnClickListener(new View.OnClickListener() {
+                       @Override
+                       public void onClick(View v) {
+                           addPlayList(mangbaihat.get(0).getID());
+                       }
+                   });*/
+
+
    @Override
     public void onResume() {
         super.onResume();

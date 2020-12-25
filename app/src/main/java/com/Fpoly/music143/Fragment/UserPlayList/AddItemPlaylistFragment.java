@@ -36,9 +36,7 @@ public class AddItemPlaylistFragment extends BottomSheetDialogFragment {
     ArrayList<PlayList> myplayLists;
 
 
-    public AddItemPlaylistFragment() {
-        // Required empty public constructor
-    }
+    public AddItemPlaylistFragment() { }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -101,13 +99,8 @@ public class AddItemPlaylistFragment extends BottomSheetDialogFragment {
                         dialog.dismiss();
                     }
                 });
-
                 //Show Dialog
                 builder.create().show();
-
-
-
-
             }
         });
 
