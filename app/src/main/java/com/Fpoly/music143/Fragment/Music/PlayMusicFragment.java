@@ -80,8 +80,9 @@ public class PlayMusicFragment extends BottomSheetDialogFragment implements Acti
     Fragment_Play_Danh_Sach_Cac_Bai_Hat fragment_play_danh_sach_cac_bai_hat;
     UserInfor userInfor = UserInfor.getInstance();
 //    Music
-    public MediaPlayer mediaPlayer = new MediaPlayer() ;
-    public boolean stop = false  ;
+    public static MediaPlayer mediaPlayer = new MediaPlayer() ;
+    public static boolean play = true ;
+    public static boolean stop = true ;
     public static int position = 0 ;
     boolean repeat = false;
     boolean checkrandom = false;
@@ -93,6 +94,8 @@ public class PlayMusicFragment extends BottomSheetDialogFragment implements Acti
     private DotsIndicator dotsIndicator_music;
     private String TAG = "Lifecycle" ;
     public static  AddItemPlaylistFragment bottomSheetFragment = new AddItemPlaylistFragment();
+    ProgressBar progressBarMusic ;
+
 
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -111,18 +114,27 @@ public class PlayMusicFragment extends BottomSheetDialogFragment implements Acti
     //Hàm lấy dữ liệu
     public void getDataFromIntent() {
         Log.d(TAG,"getDataFromIntent") ;
-            Bundle bundle = getArguments();
-            //Nhận dữ liệu từ các fragment truyền qua
-            Song song = bundle.getParcelable("Songs");
-            if(song==null){
-                mangbaihat = bundle.getParcelableArrayList("MultipleSongs");
-            }else{
-                mangbaihat.clear();
-                mangbaihat.add(song);
-            }
+        Bundle bundle = getArguments();
+        //Nhận dữ liệu từ các fragment truyền qua
+        Song song = bundle.getParcelable("Songs");
+        if(song==null){
+            mangbaihat = bundle.getParcelableArrayList("MultipleSongs");
+        } else{
+            mangbaihat.clear();
+            mangbaihat.add(song);
+        }
+        // get position hiện tại của bài hát
+        if (bundle.getInt("position") != 0) {
+            position = bundle.getInt("position");
+        } else {
+            position = 0;
+        }
     }
     //Hàm ánh xạ, và chơi nhạc ban đầu
     private void init(View root) {
+        play = true ;
+        progressBarMusic = root.findViewById(R.id.progressBarMusic) ;
+        progressBarMusic.setProgress(0);
         dotsIndicator_music = root.findViewById(R.id.dotsIndicator_music) ;
         navBar = root.findViewById(R.id.nav_view);
         mediaSession = new MediaSessionCompat(getContext(),"PlayerAudio");
@@ -144,7 +156,7 @@ public class PlayMusicFragment extends BottomSheetDialogFragment implements Acti
         songs_artist_name = root.findViewById(R.id.songs_artist_name)  ;
         play_button = root.findViewById(R.id.play_button)  ;
 
-        //Đổ dữ liệu hình ảnh lên fragment đĩa nhạc và danh sách lên fragment playdanhsach
+        // ViewPagerPlaymusic
         fragment_dia_nhac = new Fragment_Dia_Nhac();
         fragment_play_danh_sach_cac_bai_hat = new Fragment_Play_Danh_Sach_Cac_Bai_Hat();
         adapternhac = new ViewPagerPlayListNhac(getChildFragmentManager());
@@ -153,41 +165,8 @@ public class PlayMusicFragment extends BottomSheetDialogFragment implements Acti
         viewpagerplaynhac.setAdapter(adapternhac);
         dotsIndicator_music.setViewPager(viewpagerplaynhac);
         fragment_dia_nhac = (Fragment_Dia_Nhac) adapternhac.getItem(0);
-        // get position hiện tại của bài hát
-        if(mangbaihat.size()>0){
-            try {
-                Bundle bundle = getArguments();
-                if(bundle.getInt("position")!=0){
-                    position = bundle.getInt("position");
-                }else{
-                    position = 0;
-                }
-            } catch (Exception e) {}
 
-            // Gán ảnh và text
-            Picasso.get().load(mangbaihat.get(position).getImage()).into(songs_cover_one);
-            songs_title.setText(mangbaihat.get(position).getName());
-            songs_artist_name.setText(mangbaihat.get(position).getSinger());
-
-            //Kiểm tra có nằm trong danh sách bài hát yêu thích hay không
-            checkDuplicate(mangbaihat.get(position).getID());
-            if(isFavorites){
-                imgbtnlike.setImageResource(R.drawable.ic_favorite_black_24dp);
-            }else{
-                imgbtnlike.setImageResource(R.drawable.ic_baseline_favorite_border_24);
-            }
-
-            //Chạy bài hát và đổi hình ảnh nút play
-            playMp3.execute(mangbaihat.get(position).getLink());
-            imgbtnplay.setImageResource(R.drawable.ic_play);
-            play_button.setImageResource(R.drawable.ic_baseline_play_arrow_24);
-            showNotification(R.drawable.ic_pause_circle_filled_black_24dp);
-
-        }
-
-    }
-    //Hàm bắt các sự kiện nhấn của các nút
-    private void eventClick() {
+        // Gán ảnh và text
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -202,7 +181,41 @@ public class PlayMusicFragment extends BottomSheetDialogFragment implements Acti
                 }
             }
         },500);
+        Picasso.get().load(mangbaihat.get(position).getImage()).into(songs_cover_one);
+        songs_title.setText(mangbaihat.get(position).getName());
+        songs_artist_name.setText(mangbaihat.get(position).getSinger());
 
+        //Kiểm tra có nằm trong danh sách bài hát yêu thích hay không
+        checkDuplicate(mangbaihat.get(position).getID());
+        if(isFavorites){
+            imgbtnlike.setImageResource(R.drawable.ic_favorite_black_24dp);
+        }else{
+            imgbtnlike.setImageResource(R.drawable.ic_baseline_favorite_border_24);
+        }
+
+        //Chạy bài hát và đổi hình ảnh nút play
+        playMp3.execute(mangbaihat.get(position).getLink());
+        imgbtnplay.setImageResource(R.drawable.ic_play);
+        play_button.setImageResource(R.drawable.ic_baseline_play_arrow_24);
+        showNotification(R.drawable.ic_pause_circle_filled_black_24dp);
+
+
+    }
+    //Hàm bắt các sự kiện nhấn của các nút
+    private void eventClick() {
+        //Nút Chơi Nhạc
+        imgbtnplay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                playClicked();
+            }
+        });
+        play_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                playClicked();
+            }
+        });
 
         //Khi nhấn vào nút yêu thích(trái tim)
         imgbtnlike.setOnClickListener(new View.OnClickListener() {
@@ -219,21 +232,6 @@ public class PlayMusicFragment extends BottomSheetDialogFragment implements Acti
             @Override
             public void onClick(View v) {
                 addPlayList(mangbaihat.get(position).getID());
-            }
-        });
-
-
-        //Nút Chơi Nhạc
-        imgbtnplay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                playClicked();
-            }
-        });
-        play_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                playClicked();
             }
         });
 
@@ -297,7 +295,12 @@ public class PlayMusicFragment extends BottomSheetDialogFragment implements Acti
         imgbtnnext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressBarMusic.setVisibility(View.VISIBLE);
+                imgbtnplay.setVisibility(View.GONE);
                 nextClicked();
+                play = true ;
+                Fragment_Play_Danh_Sach_Cac_Bai_Hat.playnhacAdapter.notifyDataSetChanged();
+
             }
         });
 
@@ -305,27 +308,31 @@ public class PlayMusicFragment extends BottomSheetDialogFragment implements Acti
         imgbtnpre.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressBarMusic.setVisibility(View.VISIBLE);
+                imgbtnplay.setVisibility(View.GONE);
                 prevClicked();
+                play = true ;
+                Fragment_Play_Danh_Sach_Cac_Bai_Hat.playnhacAdapter.notifyDataSetChanged();
 
             }
         });
     }
-
 
 //    ================== 2 =====================
     //Hàm play bài hát
     @Override
     public void playClicked() {
         if(mediaPlayer.isPlaying()){
-//            stop = true ;
             mediaPlayer.pause();
-
+            play = false ;
+            Fragment_Play_Danh_Sach_Cac_Bai_Hat.playnhacAdapter.notifyDataSetChanged();
             imgbtnplay.setImageResource(R.drawable.ic_play);
             play_button.setImageResource(R.drawable.ic_baseline_play_arrow_24);
             showNotification(R.drawable.ic_play);
-        }else{
-//            stop = false ;
+        }else {
             mediaPlayer.start();
+            play = true;
+            Fragment_Play_Danh_Sach_Cac_Bai_Hat.playnhacAdapter.notifyDataSetChanged();
             play_button.setImageResource(R.drawable.ic_baseline_pause_24_white);
             imgbtnplay.setImageResource(R.drawable.ic_pause_circle_filled_black_24dp);
             showNotification(R.drawable.ic_pause_circle_filled_black_24dp);
@@ -347,6 +354,7 @@ public class PlayMusicFragment extends BottomSheetDialogFragment implements Acti
                 imgbtnplay.setImageResource(R.drawable.ic_pause_circle_filled_black_24dp);
                 play_button.setImageResource(R.drawable.ic_baseline_pause_24_white);
                 position++;
+                // cap nhat lai Viewpager
                 adapternhac.notifyDataSetChanged();
                 //nếu người dùng đang chọn chế dộ lặp lại
                 if (repeat == true){
@@ -470,7 +478,7 @@ public class PlayMusicFragment extends BottomSheetDialogFragment implements Acti
             @Override
             public void run() {
                 //kiểm tra biến stop, biến này true khi bấm thoát khỏi fragment này,luồng lấy thời gian bài hát chỉ chạy khi biến này false
-                if(!stop){
+                if(play){
                     //kiểm tra sự tồn tại của mediaplayer
                     if (mediaPlayer !=null){
                         try {
@@ -488,9 +496,53 @@ public class PlayMusicFragment extends BottomSheetDialogFragment implements Acti
                                             next = true;
                                         } else {
                                             next = false ;
+                                            Fragment_Play_Danh_Sach_Cac_Bai_Hat.playnhacAdapter.notifyDataSetChanged();
+                                            if (position < (mangbaihat.size())) {
+                                                imgbtnplay.setImageResource(R.drawable.ic_pause_circle_filled_black_24dp);
+                                                play_button.setImageResource(R.drawable.ic_baseline_pause_24_white);
+                                                position++;
+                                                if (repeat == true) {
+                                                    if (position == 0) {
+                                                        position = mangbaihat.size();
+                                                    }
+                                                    position -= 1;
+                                                }
+                                                // phát ngẫu nhiên
+                                                if (checkrandom == true) {
+                                                    Random random = new Random();
+                                                    int index = random.nextInt(mangbaihat.size());
+                                                    if (index == position) {
+                                                        position = index - 1;
+                                                    }
+                                                    position = index;
+                                                }
+                                                if (position > (mangbaihat.size() - 1)) {
+                                                    position = 0;
+                                                }
+                                                new PlayMp3().execute(mangbaihat.get(position).getLink());
+
+                                                fragment_dia_nhac.Playnhac(mangbaihat.get(position).getImage());
+                                                Picasso.get().load(mangbaihat.get(position).getImage()).into(songs_cover_one);
+                                                songs_title.setText(mangbaihat.get(position).getName());
+                                                songs_artist_name.setText(mangbaihat.get(position).getSinger());
+                                            }
+                                            //sau khi click xong vô hiệu 2 nút;
+                                            imgbtnpre.setClickable(false);
+                                            imgbtnnext.setClickable(false);
+                                            //tạo một luồng set lại 2 nút
+                                            Handler handler1 = new Handler();
+                                            handler1.postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    imgbtnpre.setClickable(true);
+                                                    imgbtnnext.setClickable(true);
+                                                }
+                                            }, 5000);
                                         }
-                                    }else {
+                                    }else  {
                                         next = true ;
+                                        play = true ;
+                                        Fragment_Play_Danh_Sach_Cac_Bai_Hat.playnhacAdapter.notifyDataSetChanged();
                                     }
                                     try{
                                         //tạm ngủ thread này 1s
@@ -514,6 +566,7 @@ public class PlayMusicFragment extends BottomSheetDialogFragment implements Acti
             @Override
             public void run() {
                 if (next == true) {
+
                     if (position < (mangbaihat.size())) {
                         imgbtnplay.setImageResource(R.drawable.ic_pause_circle_filled_black_24dp);
                         play_button.setImageResource(R.drawable.ic_baseline_pause_24_white);
@@ -658,12 +711,16 @@ public class PlayMusicFragment extends BottomSheetDialogFragment implements Acti
             e.printStackTrace();
         }
         mediaPlayer.start();
+        play = true ;
+        progressBarMusic.setVisibility(View.GONE);
+        imgbtnplay.setVisibility(View.VISIBLE);
         imgbtnplay.setImageResource(R.drawable.ic_pause_circle_filled_black_24dp);
         play_button.setImageResource(R.drawable.ic_baseline_pause_24_white);
         TimeSong();
         UpdateTime();
     }
 }
+
     // show notification
     public void showNotification(int playPauseBtn){
         try{
@@ -736,7 +793,6 @@ public class PlayMusicFragment extends BottomSheetDialogFragment implements Acti
 //    ================== 6 =====================
     @Override
     public void onResume() {
-        MainActivity.slidingUpPanelLayout();
         Log.d(TAG,"onResume") ;
         super.onResume();
         Intent intent = new Intent(getContext(), MusicService.class);
@@ -748,7 +804,7 @@ public class PlayMusicFragment extends BottomSheetDialogFragment implements Acti
         if (mediaPlayer.isPlaying()) {
             mediaPlayer.stop();
             mediaPlayer.release();
-            stop = true;
+            play = false;
         }
         super.onDestroyView();
     }

@@ -125,21 +125,6 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.ViewHolder>{
         myFragment.setArguments(bundle);
         activity.getSupportFragmentManager().beginTransaction().replace(R.id.container, myFragment).addToBackStack(null).commit();
     }
-//        sendMessage();
-
-
-
-
-
-
-    private void sendMessage() {
-        Log.d("sender", "Broadcasting message");
-        Intent intent = new Intent("custom-event-name");
-        // You can also include some extra data.
-        intent.putExtra("message", "This is my message!");
-        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
-    }
-
 }
 
 

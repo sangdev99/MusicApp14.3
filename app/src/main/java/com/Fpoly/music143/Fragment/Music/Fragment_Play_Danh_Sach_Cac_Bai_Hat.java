@@ -18,7 +18,7 @@ public class Fragment_Play_Danh_Sach_Cac_Bai_Hat extends Fragment {
     View view;
 
     public static RecyclerView recyclerViewPlayNhac;
-    PlaynhacAdapter playnhacAdapter;
+    public static PlaynhacAdapter playnhacAdapter;
 
 
     @Override

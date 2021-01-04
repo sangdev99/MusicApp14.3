@@ -34,6 +34,7 @@ public class MusicService extends Service   {
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
+        MainActivity.slidingUpPanelLayout();
         Log.e("Bind","Method");
         return mBinder;
     }

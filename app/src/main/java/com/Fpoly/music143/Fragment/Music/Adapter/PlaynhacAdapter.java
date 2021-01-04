@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.Fpoly.music143.Fragment.Music.Fragment_Dia_Nhac;
 import com.Fpoly.music143.Fragment.Music.PlayMusicFragment;
 import com.Fpoly.music143.Interface.ItemClickListener;
 import com.Fpoly.music143.Model.Song;
@@ -51,8 +52,12 @@ public class PlaynhacAdapter extends RecyclerView.Adapter<PlaynhacAdapter.ViewHo
         holder.txttencasi.setText(song.getSinger());
         holder.txtindex.setText(position + 1 + "");
         holder.txttenbaihat.setText(song.getName());
-        if (position == PlayMusicFragment.position) {
-            holder.equalizer.animateBars();
+        if (position == PlayMusicFragment.position ) {
+            if (PlayMusicFragment.play == true) {
+                holder.equalizer.animateBars();
+            } else {
+                holder.equalizer.stopBars();
+            }
         } else {
             holder.equalizer.setVisibility(View.GONE);
         }
